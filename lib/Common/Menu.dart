@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:velecasni/Views/Daily.dart';
-
-import 'package:velecasni/Views/Family.dart';
+import 'package:iaso/Views/Daily.dart';
+import 'package:iaso/Views/Family.dart';
 
 class Menu {
   void transfer(BuildContext context, int index) {
