@@ -7,11 +7,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Velecasni',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Family());
+    return MaterialApp(title: 'Velecasni', home: Family());
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:velecasni/Views/Daily.dart';
 
 import 'package:velecasni/Views/Family.dart';
 
@@ -11,6 +12,8 @@ class Menu {
             context, MaterialPageRoute(builder: (context) => new Family()));
         break;
       case 1:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Daily()));
         break;
       case 2:
         break;

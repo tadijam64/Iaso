@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:velecasni/Common/AppBarGradient.dart';
 import 'package:velecasni/Common/Menu.dart';
 
-class Family extends StatefulWidget {
-  FamilyState createState() => new FamilyState();
+class Daily extends StatefulWidget {
+  DailyState createState() => new DailyState();
 }
 
-class FamilyState extends State<Family> {
+class DailyState extends State<Daily> {
   @override
   Widget build(BuildContext context) {
     return pageScafold();
   }
 
-  Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
+  Color gradientStart = Colors.blue, gradientEnd = Color(0xFF135a91);
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -22,7 +22,7 @@ class FamilyState extends State<Family> {
           onTap: (index) {
             Menu().transfer(context, index);
           },
-          currentIndex: 0,
+          currentIndex: 1,
         ),
         tabBuilder: (BuildContext context, int index) {
           return CupertinoTabView(
@@ -35,7 +35,7 @@ class FamilyState extends State<Family> {
                           LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
                     middle: Text(
-                      "Family",
+                      "Daily report",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
