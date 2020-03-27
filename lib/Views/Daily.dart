@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:velecasni/Common/AppBarGradient.dart';
-import 'package:velecasni/Common/Menu.dart';
+import 'package:iaso/Common/AppBarGradient.dart';
+import 'package:iaso/Common/Menu.dart';
 
 class Daily extends StatefulWidget {
   DailyState createState() => new DailyState();
