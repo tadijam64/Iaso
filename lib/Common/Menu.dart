@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Views/Daily.dart';
 import 'package:iaso/Views/Family.dart';
+import 'package:velecasni/Views/Supplies.dart';
 
 class Menu {
   void transfer(BuildContext context, int index) {
@@ -15,7 +16,10 @@ class Menu {
             context, MaterialPageRoute(builder: (context) => new Daily()));
         break;
       case 2:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Supplies()));
         break;
+      case 3:
       default:
         break;
     }
