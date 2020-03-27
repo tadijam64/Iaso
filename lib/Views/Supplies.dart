@@ -37,7 +37,7 @@ class SuppliesState extends State<Supplies> {
                     border: GradientCheatingBorder.fromBorderSide(
                       BorderSide.none,
                       gradient:
-                      LinearGradient(colors: [gradientStart, gradientEnd]),
+                          LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
                     middle: Text(
                       "Daily report",
@@ -70,15 +70,20 @@ class SuppliesState extends State<Supplies> {
 
   _content() {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('group').document("Ut0uawAuu0yv1e8nDOfc").collection("users").snapshots(),
+      stream: Firestore.instance
+          .collection('group')
+          .document("Ut0uawAuu0yv1e8nDOfc")
+          .collection("users")
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError)
-          return new Text('Error: ${snapshot.error}');
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return new Text('Loading...');
+          case ConnectionState.waiting:
+            return new Text('Loading...');
           default:
             return new ListView(
-              children: snapshot.data.documents.map((DocumentSnapshot document) {
+              children:
+                  snapshot.data.documents.map((DocumentSnapshot document) {
                 //print("###########" + document.data.toString());
 
                 return new ListTile(
@@ -91,4 +96,3 @@ class SuppliesState extends State<Supplies> {
     );
   }
 }
-
