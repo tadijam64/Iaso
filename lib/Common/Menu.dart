@@ -38,7 +38,7 @@ class Menu {
             CupertinoIcons.news,
             size: 24,
           ),
-          title: Text("Daily report ")),
+          title: Text("Daily report")),
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.shopping_cart,
