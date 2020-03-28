@@ -1,6 +1,31 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
+enum FamilyStatus { good, ok, bad }
+
 class FamilyTile extends StatelessWidget {
+  FamilyStatus status = FamilyStatus.good;
+  String name = "";
+  String description = "";
+  Uint8List avatar;
+
+  FamilyTile({this.status, this.name, this.description, this.avatar});
+
+  List<Color> _getStatusColors() {
+    switch (status) {
+      case FamilyStatus.good:
+        return [Color(0xFF05A66B), Color(0xFF02734A)];
+        break;
+      case FamilyStatus.ok:
+        return [Color(0xFFF2CB05), Color(0xFFF2B705)];
+        break;
+      case FamilyStatus.bad:
+        return [Color(0xFFD92525), Color(0xFF8C0808)];
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,19 +46,20 @@ class FamilyTile extends StatelessWidget {
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [Color(0xFF05A66B), Color(0xFF02734A)]),
+                          gradient: LinearGradient(colors: _getStatusColors()),
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Center(
                           child: Text(
-                        "LR",
+                        name.substring(0, 2).toUpperCase(),
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       )),
                     ),
-                    /*CircleAvatar(
+                    avatar != null
+                        ? CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.black,
-                          )*/
+                            backgroundImage: MemoryImage(avatar),
+                          )
+                        : Material()
                   ],
                 ),
                 SizedBox(
@@ -44,14 +70,14 @@ class FamilyTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Leo Siniša Radošić",
+                      name,
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.grey[900],
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Supplys 9, Health status: OK",
+                      description,
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[400],

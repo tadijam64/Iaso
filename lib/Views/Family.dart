@@ -106,15 +106,27 @@ class FamilyState extends State<Family> {
           SizedBox(
             height: 10,
           ),
-          FamilyTile(),
+          FamilyTile(
+            status: FamilyStatus.good,
+            name: "Leo Siniša Radošić",
+            description: "Supplies 9",
+          ),
           SizedBox(
             height: 10,
           ),
-          FamilyTile(),
+          FamilyTile(
+            status: FamilyStatus.bad,
+            name: "Leo Siniša Radošić",
+            description: "Supplies 9",
+          ),
           SizedBox(
             height: 10,
           ),
-          FamilyTile(),
+          FamilyTile(
+            status: FamilyStatus.ok,
+            name: "Leo Siniša Radošić",
+            description: "Supplies 9",
+          ),
         ],
       ),
     ));
