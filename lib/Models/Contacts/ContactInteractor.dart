@@ -12,6 +12,13 @@ class ContactInteractor {
         .updateData(contact.toJson());
   }
 
+  Future<void> addContactRequest(FirebaseContact contact) async {
+    await Firestore.instance
+        .collection('users/' + Settings().userId + "/contacts")
+        .document(contact.phoneNumber)
+        .setData(contact.toJson());
+  }
+
   Stream<List<FirebaseContact>> getAllContacts() {
     return firestore
         .collection('users')
