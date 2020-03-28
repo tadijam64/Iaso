@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
 
 class SupplyTile extends StatelessWidget {
   Supply suply;
+  String id;
   TextEditingController controller;
 
-  SupplyTile({this.suply, this.controller});
+  SupplyTile({this.suply, this.id, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +62,16 @@ class SupplyTile extends StatelessWidget {
                           CupertinoIcons.shopping_cart,
                           size: 24,
                         ),
-                        onPressed: () => {})
+                        onPressed: () => _addToBuyList())
                   ],
                 )
               ],
             )));
+  }
+
+  _addToBuyList() {
+    //print(id);
+    SuppliesFirebaseManager i = new SuppliesFirebaseManager();
+    i.updateSupply(id, suply);
   }
 }

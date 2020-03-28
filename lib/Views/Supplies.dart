@@ -111,7 +111,7 @@ class SuppliesState extends State<Supplies> {
         return _showSupplies();
         break;
       case 1:
-        return _showSupplies();
+        return _showBuyList();
         break;
       case 2:
         return SupplyAddNew();
@@ -130,7 +130,48 @@ class SuppliesState extends State<Supplies> {
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                   child: Column(children: <Widget>[
                     StreamBuilder<Map<String, Supply>>(
-                      stream: SuppliesFirebaseManager().getAllSupplies(Settings().userId),
+                      stream: SuppliesFirebaseManager()
+                          .getAllSupplies(Settings().userId),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<String, Supply>> supplies) {
+                        if (supplies.hasError)
+                          return new Text('Error: ${supplies.error}');
+                        switch (supplies.connectionState) {
+                          case ConnectionState.waiting:
+                            return new Text('Loading...');
+                          default:
+                            print(supplies.data);
+                            return new Column(children: [
+                              Material()
+                            ]); //_getToBuyList(supplies.data));
+                        }
+                      },
+                    )
+                  ]))))
+    ]);
+
+    /**/
+  }
+
+  selectMenu(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  _showBuyList() {
+    return Column(children: <Widget>[
+      SizedBox(
+        height: 35,
+      ),
+      Expanded(
+          child: SingleChildScrollView(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+                  child: Column(children: <Widget>[
+                    StreamBuilder<Map<String, Supply>>(
+                      stream: SuppliesFirebaseManager()
+                          .getBuyList(Settings().userId),
                       builder: (BuildContext context,
                           AsyncSnapshot<Map<String, Supply>> supplies) {
                         if (supplies.hasError)
@@ -164,13 +205,28 @@ class SuppliesState extends State<Supplies> {
                     )
                   ]))))
     ]);
-
-    /**/
   }
 
-  selectMenu(int index) {
-    setState(() {
-      selectedIndex = index;
+  _getToBuyList(Map<String, Supply> supplies) {
+    List<Widget> lista = new List();
+    supplies.values.map((Supply supply) {
+      TextEditingController controller = new TextEditingController();
+      controller.text = supply.amount.toString();
+      // print(id);
+      lista.add(Column(
+        children: <Widget>[
+          SupplyTile(
+            id: id,
+            suply: supply,
+            controller: controller,
+          ),
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ));
+      return null;
     });
+    return lista;
   }
 }

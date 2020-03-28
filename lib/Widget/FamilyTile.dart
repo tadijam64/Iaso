@@ -51,7 +51,7 @@ class FamilyTileStatus extends State<FamilyTile> {
 
   String _getDescription() {
     return "Supplies: " +
-        supply.length.toString() +
+        (supply != null ? supply.length.toString() : "0") +
         " ,Avg. temperature " +
         overview.temperatureAverage.toString();
   }
