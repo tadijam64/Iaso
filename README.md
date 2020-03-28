@@ -1,4 +1,13 @@
-# velecasni
+# Iaso
+
+<img width="220" height="384" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Iaso.jpg/220px-Iaso.jpg">
+
+Iaso or Ieso was the Greek goddess of recuperation from illness.
+
+# Hack Zurich
+[#CodeVsCovid19](https://digitalfestival.ch/en/HACK/)
+
+# Tech info
 
 A new Flutter project.
 
