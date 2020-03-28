@@ -5,7 +5,7 @@ class CheckPhoneNumberInteractor {
   checkPhoneNumber(String phoneNumber) {
     Firestore.instance
         .collection('users')
-        .where("brojTelefona", isEqualTo: phoneNumber)
+        .where("phoneNumber", isEqualTo: phoneNumber)
         .snapshots()
         .listen((data) async {
       if (data.documents.length > 0) {
@@ -14,7 +14,7 @@ class CheckPhoneNumberInteractor {
       } else {
         await Firestore.instance
             .collection('users')
-            .add({'brojTelefona': phoneNumber}).then((result) {
+            .add({'phoneNumber': phoneNumber}).then((result) {
           Settings().setUserId(result.documentID);
           Settings().startUp();
         });

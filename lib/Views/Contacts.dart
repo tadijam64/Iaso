@@ -22,11 +22,6 @@ class ContactsState extends State<Contacts> {
   void initState() {
     super.initState();
     refreshContacts();
-    /*ContactsService.getContacts().then((value) {
-      setState(() {
-        contacts = value.toList();
-      });
-    });*/
 
     ContactInteractor interactor = new ContactInteractor();
     interactor.getRequested().then((value) {
