@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 class User {
   String id;
   int age;
   String name;
   String phoneNumber;
+  Uint8List avatar;
 
   User({
     this.id,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
+import 'package:iaso/Models/User/User.dart';
 
 class ContactInteractor {
   var firestore = Firestore.instance;
@@ -17,6 +18,23 @@ class ContactInteractor {
         .collection('users/' + Settings().userId + "/contacts")
         .document(contact.phoneNumber)
         .setData(contact.toJson());
+
+    //Nađu userID
+    //Spremi mu request
+
+    Firestore.instance
+        .collection('users')
+        .where("phoneNumber", isEqualTo: contact.phoneNumber)
+        .snapshots()
+        .listen((data) async {
+      if (data.documents.length > 0) {
+        print(contact.phoneNumber);
+        Firestore.instance
+            .collection('users/' + data.documents[0].documentID + "/requests")
+            .document("1234")
+            .setData(contact.toJson());
+      }
+    });
   }
 
   Stream<List<FirebaseContact>> getAllContacts() {
@@ -28,6 +46,17 @@ class ContactInteractor {
         .map((queryResult) {
       return queryResult.documents.map((DocumentSnapshot contact) {
         return FirebaseContact.fromJson(contact.data);
+      }).toList();
+    });
+  }
+
+  Stream<List<FirebaseContact>> getMyRequests() {
+    return firestore
+        .collection('users/' + Settings().userId + "/requests")
+        .snapshots()
+        .map((queryResult) {
+      return queryResult.documents.map((DocumentSnapshot user) {
+        return FirebaseContact.fromJson(user.data);
       }).toList();
     });
   }

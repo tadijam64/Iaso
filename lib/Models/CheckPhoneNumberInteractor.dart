@@ -9,6 +9,7 @@ class CheckPhoneNumberInteractor {
         .snapshots()
         .listen((data) async {
       if (data.documents.length > 0) {
+        print("Nisam dodao");
         Settings().setUserId(data.documents[0].documentID);
         Settings().startUp();
       } else {
