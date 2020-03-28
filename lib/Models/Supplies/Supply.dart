@@ -1,23 +1,27 @@
-enum SupplyStatus{ active, done}
+enum SupplyStatus { active, done }
+enum SupplyType { medicine, food, household }
 
 class Supply {
   String name;
-  int count;
+  int amount;
   int status;
+  int type;
 
-  Supply({this.name, this.count, this.status});
+  Supply({this.name, this.amount, this.status, this.type});
 
   Supply.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    count = json['count'];
+    amount = json['amount'];
     status = json['status'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    data['count'] = this.count;
+    data['amount'] = this.amount;
     data['status'] = this.status;
+    data['type'] = this.type;
     return data;
   }
 }
