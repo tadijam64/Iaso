@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iaso/Common/Settings.dart';
+import 'package:iaso/Views/Splash.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +13,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'CoAway-20',
         navigatorKey: Get.key,
-        home: Settings().startUp());
+        home: SplashScreen());
   }
 }
