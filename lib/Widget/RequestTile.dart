@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iaso/Models/Contacts/ContactInteractor.dart';
 
 class RequestTile extends StatelessWidget {
   String name = "";
@@ -68,7 +69,7 @@ class RequestTile extends StatelessWidget {
                 ),
                 Expanded(child: Material()),
                 CupertinoButton(
-                  onPressed: () => {},
+                  onPressed: () => _approve(),
                   child: Text(
                     'Approve',
                     style: TextStyle(color: CupertinoColors.activeGreen),
@@ -76,5 +77,10 @@ class RequestTile extends StatelessWidget {
                 )
               ],
             )));
+  }
+
+  _approve() {
+    ContactInteractor interactor = new ContactInteractor();
+    interactor.approveRequest(phoneNumber);
   }
 }

@@ -124,11 +124,6 @@ class FamilyState extends State<Family> {
   }
 
   _content() {
-    //1. dohvati kontakte
-    //2. dohvati sve requestove
-    //3. provjeri match
-    //4. Prikaži
-
     return SingleChildScrollView(
         child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
@@ -190,6 +185,7 @@ class FamilyState extends State<Family> {
               requestTile.add(Column(children: <Widget>[
                 RequestTile(
                   name: val.first.displayName,
+                  phoneNumber: f.phoneNumber,
                   avatar:
                       val.first.avatar != null && val.first.avatar.length > 0
                           ? val.first.avatar

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
+import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Models/User/User.dart';
 
 class ContactInteractor {
@@ -19,8 +20,8 @@ class ContactInteractor {
         .document(contact.phoneNumber)
         .setData(contact.toJson());
 
-    //Nađu userID
-    //Spremi mu request
+    GetUserInteractor intt = new GetUserInteractor();
+    User user = await intt.getUserById(Settings().userId);
 
     Firestore.instance
         .collection('users')
@@ -31,7 +32,7 @@ class ContactInteractor {
         print(contact.phoneNumber);
         Firestore.instance
             .collection('users/' + data.documents[0].documentID + "/requests")
-            .document("1234")
+            .document(user.phoneNumber)
             .setData(contact.toJson());
       }
     });
@@ -58,6 +59,29 @@ class ContactInteractor {
       return queryResult.documents.map((DocumentSnapshot user) {
         return FirebaseContact.fromJson(user.data);
       }).toList();
+    });
+  }
+
+  void approveRequest(String phoneNumber) async {
+    GetUserInteractor intt = new GetUserInteractor();
+    User user = await intt.getUserById(Settings().userId);
+
+    Firestore.instance
+        .collection('users')
+        .where("phoneNumber", isEqualTo: phoneNumber)
+        .snapshots()
+        .listen((data) async {
+      if (data.documents.length > 0) {
+        Firestore.instance
+            .collection('users/' + data.documents[0].documentID + "/contacts")
+            .document(user.phoneNumber)
+            .updateData({"accepted": true});
+
+        firestore
+            .collection('users/${Settings().userId}/requests')
+            .document(phoneNumber)
+            .delete();
+      }
     });
   }
 
