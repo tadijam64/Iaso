@@ -21,10 +21,10 @@ class SuppliesFirebaseManager {
         .delete();
   }
 
-  Stream<Map<String, Supply>> getAllSupplies() {
+  Stream<Map<String, Supply>> getAllSupplies(String userID) {
     return firestore
         .collection('users')
-        .document(Settings().userId)
+        .document()
         .collection("supplies")
         .snapshots()
         .map((queryResult) {

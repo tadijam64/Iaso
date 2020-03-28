@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
+import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
 import 'package:iaso/Widget/SupplyAddNew.dart';
@@ -129,7 +130,7 @@ class SuppliesState extends State<Supplies> {
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                   child: Column(children: <Widget>[
                     StreamBuilder<Map<String, Supply>>(
-                      stream: SuppliesFirebaseManager().getAllSupplies(),
+                      stream: SuppliesFirebaseManager().getAllSupplies(Settings().userId),
                       builder: (BuildContext context,
                           AsyncSnapshot<Map<String, Supply>> supplies) {
                         if (supplies.hasError)
