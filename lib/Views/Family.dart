@@ -5,6 +5,7 @@ import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/Contacts/ContactInteractor.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
+import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Widget/FamilyTile.dart';
 
@@ -24,6 +25,11 @@ class FamilyState extends State<Family> {
   @override
   void initState() {
     super.initState();
+    GetUserInteractor().getUserByPhoneNumber("63").then((user) {
+      if (user != null) {
+        print(user.toJson().toString());
+      }
+    });
     interactor.getAllContactRequests().listen((value) {
       setState(() {
         request = value;

@@ -17,6 +17,7 @@ class ContactInteractor {
         .collection('users')
         .document(Settings().userId)
         .collection("contacts")
+        .where("accepted", isEqualTo: false)
         .snapshots()
         .map((queryResult) {
       return queryResult.documents.map((DocumentSnapshot contact) {
@@ -24,6 +25,4 @@ class ContactInteractor {
       }).toList();
     });
   }
-
-
 }
