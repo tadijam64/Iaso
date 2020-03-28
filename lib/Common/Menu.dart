@@ -42,9 +42,12 @@ class Menu {
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.shopping_cart,
-            size: 24,
+            size: 30,
           ),
-          title: Text("Supplies")),
+          title: Text(
+            "Supplies",
+            style: TextStyle(fontSize: 12),
+          )),
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.heart,
