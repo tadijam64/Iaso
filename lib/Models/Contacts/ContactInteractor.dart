@@ -29,11 +29,14 @@ class ContactInteractor {
         .snapshots()
         .listen((data) async {
       if (data.documents.length > 0) {
+        FirebaseContact temp = new FirebaseContact();
+        temp.accepted = false;
+        temp.phoneNumber = user.phoneNumber;
         print(contact.phoneNumber);
         Firestore.instance
             .collection('users/' + data.documents[0].documentID + "/requests")
             .document(user.phoneNumber)
-            .setData(contact.toJson());
+            .setData(temp.toJson());
       }
     });
   }
