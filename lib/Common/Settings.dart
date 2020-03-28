@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/LoginPhoneNumber.dart';
 import 'package:iaso/Views/Pool.dart';
-import 'package:iaso/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {
@@ -13,11 +13,16 @@ class Settings {
   SharedPreferences prefs;
 
   String userId;
-  bool inited = false;
+  bool inited = false, hasUserAddedContacts = false;
 
   void setUserId(String id) {
     userId = id;
     prefs.setString("userId", id);
+  }
+
+  void setHasUserAddedContacts(bool value) {
+    hasUserAddedContacts = value;
+    prefs.setBool("hasUserAddedContacts", value);
   }
 
   factory Settings() {
@@ -34,13 +39,18 @@ class Settings {
     }
 
     userId = prefs.getString("userId");
+    hasUserAddedContacts = prefs.getBool("hasUserAddedContacts");
 
     if (userId != null) {
       _checkUserData().then((value) {
         if (value) {
           Get.off(Pool());
         } else {
-          Get.off(Family());
+          if (hasUserAddedContacts == null || !hasUserAddedContacts) {
+            Get.off(Contacts());
+          } else {
+            Get.off(Family());
+          }
         }
       });
     } else {
