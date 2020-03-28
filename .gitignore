@@ -1,0 +1,4 @@
+
+*.pyc
+
+cough-detector/train\.ipynb
