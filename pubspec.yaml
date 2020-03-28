@@ -30,6 +30,7 @@ dependencies:
   get: ^1.11.1
   contacts_service: ^0.3.10
   permission_handler: '^4.4.0+hotfix.2'
+  webview_flutter: ^0.3.19+9
 dev_dependencies:
   flutter_test:
     sdk: flutter

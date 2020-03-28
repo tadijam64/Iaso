@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Daily extends StatefulWidget {
   DailyState createState() => new DailyState();
@@ -63,5 +64,11 @@ class DailyState extends State<Daily> {
         });
   }
 
-  _content() {}
+  _content() {
+    return WebView(
+      initialUrl:
+          'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
+      javascriptMode: JavascriptMode.unrestricted,
+    );
+  }
 }
