@@ -5,6 +5,7 @@ import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
+import 'package:iaso/Widget/BuyTile.dart';
 import 'package:iaso/Widget/SupplyAddNew.dart';
 import 'package:iaso/Widget/SupplyTile.dart';
 
@@ -129,51 +130,11 @@ class SuppliesState extends State<Supplies> {
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                   child: Column(children: <Widget>[
-                    StreamBuilder<Map<String, Supply>>(
+                    StreamBuilder<List<Supply>>(
                       stream: SuppliesFirebaseManager()
                           .getAllSupplies(Settings().userId),
                       builder: (BuildContext context,
-                          AsyncSnapshot<Map<String, Supply>> supplies) {
-                        if (supplies.hasError)
-                          return new Text('Error: ${supplies.error}');
-                        switch (supplies.connectionState) {
-                          case ConnectionState.waiting:
-                            return new Text('Loading...');
-                          default:
-                            print(supplies.data);
-                            return new Column(children: [
-                              Material()
-                            ]); //_getToBuyList(supplies.data));
-                        }
-                      },
-                    )
-                  ]))))
-    ]);
-
-    /**/
-  }
-
-  selectMenu(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
-  _showBuyList() {
-    return Column(children: <Widget>[
-      SizedBox(
-        height: 35,
-      ),
-      Expanded(
-          child: SingleChildScrollView(
-              child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
-                  child: Column(children: <Widget>[
-                    StreamBuilder<Map<String, Supply>>(
-                      stream: SuppliesFirebaseManager()
-                          .getBuyList(Settings().userId),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<Map<String, Supply>> supplies) {
+                          AsyncSnapshot<List<Supply>> supplies) {
                         if (supplies.hasError)
                           return new Text('Error: ${supplies.error}');
                         switch (supplies.connectionState) {
@@ -181,9 +142,7 @@ class SuppliesState extends State<Supplies> {
                             return new Text('Loading...');
                           default:
                             return new Column(
-                              children: supplies.data.values
-                                  .toList()
-                                  .map((Supply supply) {
+                              children: supplies.data.map((Supply supply) {
                                 TextEditingController controller =
                                     new TextEditingController();
                                 controller.text = supply.amount.toString();
@@ -205,28 +164,75 @@ class SuppliesState extends State<Supplies> {
                     )
                   ]))))
     ]);
+
+    /**/
   }
 
-  _getToBuyList(Map<String, Supply> supplies) {
-    List<Widget> lista = new List();
-    supplies.values.map((Supply supply) {
-      TextEditingController controller = new TextEditingController();
-      controller.text = supply.amount.toString();
-      // print(id);
-      lista.add(Column(
-        children: <Widget>[
-          SupplyTile(
-            id: id,
-            suply: supply,
-            controller: controller,
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-      ));
-      return null;
+  selectMenu(int index) {
+    setState(() {
+      selectedIndex = index;
     });
-    return lista;
+  }
+
+  _showBuyList() {
+    return Column(children: <Widget>[
+      SizedBox(
+        height: 15,
+      ),
+      Container(
+        width: double.infinity,
+        alignment: Alignment.centerRight,
+        child: CupertinoButton(
+            child: Text("Restock all"), onPressed: () => _reStock()),
+      ),
+      Expanded(
+          child: SingleChildScrollView(
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+                  child: Column(children: <Widget>[
+                    StreamBuilder<List<Supply>>(
+                      stream: SuppliesFirebaseManager()
+                          .getBuyList(Settings().userId),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Supply>> supplies) {
+                        if (supplies.hasError)
+                          return new Text('Error: ${supplies.error}');
+                        switch (supplies.connectionState) {
+                          case ConnectionState.waiting:
+                            return new Text('Loading...');
+                          default:
+                            return new Column(
+                              children: supplies.data.map((Supply supply) {
+                                TextEditingController controller =
+                                    new TextEditingController();
+                                controller.text = supply.amount.toString();
+                                return Column(
+                                  children: <Widget>[
+                                    BuyTile(
+                                      suply: supply,
+                                      controller: controller,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    )
+                                  ],
+                                );
+                              }).toList(),
+                            );
+                        }
+                      },
+                    )
+                  ]))))
+    ]);
+  }
+
+  _reStock() {
+    SuppliesFirebaseManager().getBuyList(Settings().userId).listen((data) {
+      data.forEach((f) {
+        f.amount += f.defaultAmount;
+        f.setStatus(SupplyStatus.ok);
+        SuppliesFirebaseManager().updateSupply(f.id, f);
+      });
+    });
   }
 }

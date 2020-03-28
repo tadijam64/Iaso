@@ -5,10 +5,10 @@ import 'package:iaso/Models/Supplies/Supply.dart';
 
 class SupplyTile extends StatelessWidget {
   Supply suply;
-  String id;
+
   TextEditingController controller;
 
-  SupplyTile({this.suply, this.id, this.controller});
+  SupplyTile({this.suply, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class SupplyTile extends StatelessWidget {
   }
 
   _addToBuyList() {
-    //print(id);
+    suply.status = 2;
     SuppliesFirebaseManager i = new SuppliesFirebaseManager();
-    i.updateSupply(id, suply);
+    i.updateSupply(suply.id, suply);
   }
 }

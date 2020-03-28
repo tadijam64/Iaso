@@ -163,13 +163,14 @@ class SupplyAddNewState extends State<SupplyAddNew> {
     Supply supply = new Supply();
     supply.name = nameController.text;
     supply.amount = int.parse(amountController.text);
+    supply.defaultAmount = int.parse(defaultController.text);
 
-    if (odabraniBuyList == 1)
+    if (odabraniBuyList == 0)
       supply.setStatus(SupplyStatus.toBuy);
     else
       supply.setStatus(SupplyStatus.ok);
 
-    if (odabraniMedical == 1)
+    if (odabraniMedical == 0)
       supply.setType(SupplyType.medicine);
     else
       supply.setType(SupplyType.household);

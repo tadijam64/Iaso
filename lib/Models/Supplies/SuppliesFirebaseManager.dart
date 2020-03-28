@@ -21,30 +21,44 @@ class SuppliesFirebaseManager {
         .delete();
   }
 
-  Stream<Map<String, Supply>> getAllSupplies(String userID) {
+  Stream<List<Supply>> getAllSupplies(String userID) {
     return firestore
         .collection('users')
         .document(userID)
         .collection("supplies")
         .snapshots()
         .map((queryResult) {
-      return new Map.fromIterable(queryResult.documents,
-          key: (item) => item.documentID,
-          value: (item) => Supply.fromJson(item.data));
+      return queryResult.documents.map((f) {
+        return Supply.fromJson(f.documentID, f.data);
+      }).toList();
     });
   }
 
-  Stream<Map<String, Supply>> getBuyList(String userID) {
+  Stream<List<Supply>> getBuyList(String userID) {
     return firestore
         .collection('users')
         .document(userID)
         .collection("supplies")
-        .where("status", isEqualTo: 2)
+        .where("status", isGreaterThan: 1)
         .snapshots()
         .map((queryResult) {
-      return new Map.fromIterable(queryResult.documents,
-          key: (item) => item.documentID,
-          value: (item) => Supply.fromJson(item.data));
+      return queryResult.documents.map((f) {
+        return Supply.fromJson(f.documentID, f.data);
+      }).toList();
+    });
+  }
+
+  Stream<List<Supply>> getBoughtList(String userID) {
+    return firestore
+        .collection('users')
+        .document(userID)
+        .collection("supplies")
+        .where("status", isGreaterThan: 2)
+        .snapshots()
+        .map((queryResult) {
+      return queryResult.documents.map((f) {
+        return Supply.fromJson(f.documentID, f.data);
+      }).toList();
     });
   }
 
