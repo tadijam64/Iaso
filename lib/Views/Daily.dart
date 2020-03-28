@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
+import 'package:iaso/Models/DailyReports/GetDailyReportInteractor.dart';
+import 'package:iaso/Models/DailyReports/ReportQuery.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Daily extends StatefulWidget {
@@ -11,6 +13,20 @@ class Daily extends StatefulWidget {
 class DailyState extends State<Daily> {
   @override
   Widget build(BuildContext context) {
+    GetDailyReportInteractor()
+        .getReport(new ReportQuery(question: "What is the report for today?"))
+        .then((response) {
+      print(response.toJson().toString());
+      // you can have multiple answers in a list
+      // prompts to display for a user are found in Context prompts Display text
+      // these display text are also what you will show to the user, and send as a new query if user clicks it
+      GetDailyReportInteractor()
+          .getReport(new ReportQuery(
+              question: response.answers[0].context.prompts[0].displayText))
+          .then((response) {
+        print(response.toJson().toString());
+      });
+    });
     return pageScafold();
   }
 
