@@ -12,17 +12,23 @@ class ContactInteractor {
         .updateData(contact.toJson());
   }
 
-  Stream<List<FirebaseContact>> getAllContactRequests() {
+  Stream<List<FirebaseContact>> getAllContacts() {
     return firestore
         .collection('users')
         .document(Settings().userId)
         .collection("contacts")
-        .where("accepted", isEqualTo: false)
         .snapshots()
         .map((queryResult) {
       return queryResult.documents.map((DocumentSnapshot contact) {
         return FirebaseContact.fromJson(contact.data);
       }).toList();
+    });
+  }
+
+  Stream<List<FirebaseContact>> getContacts(bool showAccepted) {
+    return getAllContacts().map((contactList) {
+      contactList.removeWhere((item) => item.accepted != showAccepted);
+      return contactList;
     });
   }
 }

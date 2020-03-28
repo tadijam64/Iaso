@@ -6,6 +6,7 @@ import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/Contacts/ContactInteractor.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
 import 'package:iaso/Models/User/GetUserInteractor.dart';
+import 'package:iaso/Models/User/User.dart';
 import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Widget/FamilyTile.dart';
 
@@ -14,8 +15,10 @@ class Family extends StatefulWidget {
 }
 
 class FamilyState extends State<Family> {
-  List<FirebaseContact> request = new List();
-  ContactInteractor interactor = new ContactInteractor();
+  List<FirebaseContact> requests = new List();
+  List<User> familyUsers = new List();
+  ContactInteractor contactsInteractor = new ContactInteractor();
+  GetUserInteractor getUserInteractor = new GetUserInteractor();
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +28,24 @@ class FamilyState extends State<Family> {
   @override
   void initState() {
     super.initState();
-    GetUserInteractor().getUserByPhoneNumber("63").then((user) {
-      if (user != null) {
-        print(user.toJson().toString());
-      }
-    });
-    interactor.getAllContactRequests().listen((value) {
+    contactsInteractor.getContacts(false).listen((value) {
       setState(() {
-        request = value;
+        requests = value;
+      });
+    });
+    // Get all accepted contacts and show them
+    contactsInteractor.getContacts(true).map((contacts) async {
+      List<User> family = new List();
+      for (var value in contacts) {
+        User user = await getUserInteractor.getUserByPhoneNumber(value.phoneNumber);
+        family.add(user);
+      }
+      return family;
+    }).listen((onData) {
+      onData.then((onFamilyList) {
+        setState(() {
+          familyUsers = onFamilyList;
+        });
       });
     });
   }
@@ -56,8 +69,7 @@ class FamilyState extends State<Family> {
                 navigationBar: CupertinoNavigationBar(
                   border: GradientCheatingBorder.fromBorderSide(
                     BorderSide.none,
-                    gradient:
-                        LinearGradient(colors: [gradientStart, gradientEnd]),
+                    gradient: LinearGradient(colors: [gradientStart, gradientEnd]),
                   ),
                   middle: Text(
                     "Family",
@@ -74,18 +86,14 @@ class FamilyState extends State<Family> {
                   body: SafeArea(
                       child: Container(
                     decoration: BoxDecoration(
-                      gradient:
-                          LinearGradient(colors: [gradientStart, gradientEnd]),
+                      gradient: LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
                     child: Padding(
                         padding: EdgeInsets.only(top: 10.0),
                         child: Container(
                           width: double.infinity,
                           child: _content(),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(70.0))),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(70.0))),
                         )),
                   )),
                 ),
@@ -112,44 +120,27 @@ class FamilyState extends State<Family> {
           Container(
             width: double.infinity,
             height: 50,
-            decoration: BoxDecoration(
-                color: Color(0xFFF7F7F7),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
+            decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.all(Radius.circular(5))),
             child: Center(
                 child: Text(
-              "Family requests " + request.length.toString(),
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.bold),
+              "Family requests " + requests.length.toString(),
+              style: TextStyle(fontSize: 14, color: Colors.grey[400], fontWeight: FontWeight.bold),
             )),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          FamilyTile(
-            status: FamilyStatus.good,
-            name: "Leo Siniša Radošić",
-            description: "Supplies 9",
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          FamilyTile(
-            status: FamilyStatus.bad,
-            name: "Leo Siniša Radošić",
-            description: "Supplies 9",
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          FamilyTile(
-            status: FamilyStatus.ok,
-            name: "Leo Siniša Radošić",
-            description: "Supplies 9",
-          ),
+          Row(children: _showFamilyTiles()),
         ],
       ),
     ));
+  }
+
+  List<Widget> _showFamilyTiles() {
+    List<Widget> familyTiles = new List();
+    for (var user in familyUsers) {
+      familyTiles.add(SizedBox(
+        height: 10,
+      ));
+      familyTiles.add(Expanded(child: FamilyTile(status: FamilyStatus.ok, name: user.name, description: "Random")));
+    }
+    return familyTiles;
   }
 }

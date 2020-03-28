@@ -20,7 +20,7 @@ class ContactsState extends State<Contacts> {
     refreshContacts();
 
     ContactInteractor interactor = new ContactInteractor();
-    interactor.getAllContactRequests().listen((value) {
+    interactor.getContacts(false).listen((value) {
       setState(() {
         request = value;
       });
