@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/CheckPhoneNumberInteractor.dart';
 
 class LoginPhoneNumber extends StatefulWidget {
@@ -49,7 +48,7 @@ class LoginPhoneNumberState extends State<LoginPhoneNumber> {
                 Center(
                     child: CupertinoButton(
                   child: Text(
-                    'SAVE DATA',
+                    'Next',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
@@ -67,6 +66,4 @@ class LoginPhoneNumberState extends State<LoginPhoneNumber> {
     phoneNumberTextEditControler.dispose();
     super.dispose();
   }
-
-  _content() {}
 }
