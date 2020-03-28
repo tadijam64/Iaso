@@ -49,7 +49,8 @@ class HealthFirebaseManager {
     healthScore -= productiveCoughScore;
     healthScore -= headAcheScore;
     healthScore -= musclePain;
-    var temperatureAverage = getTemperatureAverage(healthChecks.map((healthCheck) => healthCheck.temperature));
+    List<double> temperatureList = healthChecks.map((healthCheck) => healthCheck.temperature).toList();
+    var temperatureAverage = getTemperatureAverage(temperatureList);
     TemperatureStatus temperatureStatus;
     if (temperatureAverage < 37.5 && temperatureAverage >= 36.5) {
       temperatureStatus = TemperatureStatus.good;
