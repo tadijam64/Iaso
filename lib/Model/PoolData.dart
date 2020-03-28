@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iaso/Common/Settings.dart';
 
 class PoolData {
-  void saveData(String name, int age) {
+  Future<void> saveData(String name, int age) async {
     DocumentReference postRef =
         Firestore.instance.document("users/" + Settings().userId);
 
-    Firestore.instance.runTransaction((Transaction tx) async {
+    await Firestore.instance.runTransaction((Transaction tx) async {
       DocumentSnapshot postSnapshot = await tx.get(postRef);
       if (postSnapshot.exists) {
         await tx.update(postRef, <String, dynamic>{'name': name, 'age': age});

@@ -55,6 +55,7 @@ class LoginPhoneNumberState extends State<LoginPhoneNumber> {
                       onPressed: () {
                     CheckPhoneNumberInteractor()
                         .checkPhoneNumber(phoneNumberTextEditControler.text);
+
                     Settings().startUp();
                   },
                 ))

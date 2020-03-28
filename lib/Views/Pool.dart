@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Model/PoolData.dart';
 
 class Pool extends StatefulWidget {
@@ -92,11 +93,13 @@ class PoolState extends State<Pool> {
     ));
   }
 
-  _saveData() {
+  _saveData() async {
     String name = nameController.text;
     int age = int.parse(ageController.text);
 
     PoolData pd = new PoolData();
-    pd.saveData(name, age);
+    await pd.saveData(name, age);
+
+    Settings().startUp();
   }
 }
