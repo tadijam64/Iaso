@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
+import 'package:iaso/Models/Contacts/ContactInteractor.dart';
+import 'package:iaso/Models/Contacts/FirebaseContact.dart';
 import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Widget/FamilyTile.dart';
 
@@ -11,9 +13,22 @@ class Family extends StatefulWidget {
 }
 
 class FamilyState extends State<Family> {
+  List<FirebaseContact> request = new List();
+  ContactInteractor interactor = new ContactInteractor();
+
   @override
   Widget build(BuildContext context) {
     return pageScafold();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    interactor.getAllContactRequests().listen((value) {
+      setState(() {
+        request = value;
+      });
+    });
   }
 
   Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
@@ -96,7 +111,7 @@ class FamilyState extends State<Family> {
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             child: Center(
                 child: Text(
-              "Family requests 0",
+              "Family requests " + request.length.toString(),
               style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[400],
