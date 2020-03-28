@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iaso/Common/Settings.dart';
-import 'package:iaso/Model/PoolData.dart';
+import 'package:iaso/Models/PoolInteractor.dart';
 
 class Pool extends StatefulWidget {
   PoolState createState() => new PoolState();
@@ -97,7 +97,7 @@ class PoolState extends State<Pool> {
     String name = nameController.text;
     int age = int.parse(ageController.text);
 
-    PoolData pd = new PoolData();
+    PoolInteractor pd = new PoolInteractor();
     await pd.saveData(name, age);
 
     Settings().startUp();

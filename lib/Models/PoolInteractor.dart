@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iaso/Common/Settings.dart';
 
-class PoolData {
+class PoolInteractor {
   Future<void> saveData(String name, int age) async {
     DocumentReference postRef =
         Firestore.instance.document("users/" + Settings().userId);

@@ -40,7 +40,7 @@ class Settings {
         if (value) {
           Get.to(Pool());
         } else {
-          Get.to(Family());
+          Get.off(Family());
         }
       });
     } else {

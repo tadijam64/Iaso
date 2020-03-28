@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iaso/Common/Settings.dart';
-import 'package:iaso/Views/Family.dart';
 
 void main() => runApp(MyApp());
 
