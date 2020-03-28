@@ -1,8 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
+import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
+import 'package:iaso/Models/Supplies/Supply.dart';
 
 class Supplies extends StatefulWidget {
   SuppliesState createState() => new SuppliesState();
@@ -65,25 +66,19 @@ class SuppliesState extends State<Supplies> {
   }
 
   _content() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
-          .collection('group')
-          .document("Ut0uawAuu0yv1e8nDOfc")
-          .collection("users")
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-        switch (snapshot.connectionState) {
+    return StreamBuilder<Map<String, Supply>>(
+      stream: SuppliesFirebaseManager().getAllSupplies(),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, Supply>> supplies) {
+        if (supplies.hasError) return new Text('Error: ${supplies.error}');
+        switch (supplies.connectionState) {
           case ConnectionState.waiting:
             return new Text('Loading...');
           default:
             return new ListView(
-              children:
-                  snapshot.data.documents.map((DocumentSnapshot document) {
-                //print("###########" + document.data.toString());
-
-                    return new ListTile(
-                  title: new Text(document["name"]),
+              children: supplies.data.values.toList().map((Supply supply) {
+                return new ListTile(
+                  title: new Text(supply.toJson().toString()),
                 );
               }).toList(),
             );
