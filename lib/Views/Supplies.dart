@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:iaso/Common/Menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
@@ -27,7 +23,7 @@ class SuppliesState extends State<Supplies> {
           onTap: (index) {
             Menu().transfer(context, index);
           },
-          currentIndex: 1,
+          currentIndex: 2,
         ),
         tabBuilder: (BuildContext context, int index) {
           return CupertinoTabView(
@@ -40,7 +36,7 @@ class SuppliesState extends State<Supplies> {
                           LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
                     middle: Text(
-                      "Daily report",
+                      "Supplies",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -86,7 +82,7 @@ class SuppliesState extends State<Supplies> {
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 //print("###########" + document.data.toString());
 
-                return new ListTile(
+                    return new ListTile(
                   title: new Text(document["name"]),
                 );
               }).toList(),
