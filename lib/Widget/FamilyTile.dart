@@ -1,29 +1,59 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:iaso/Models/Health/HealthOverview.dart';
+import 'package:iaso/Models/Supplies/Supply.dart';
 
 enum FamilyStatus { good, ok, bad }
 
-class FamilyTile extends StatelessWidget {
+class FamilyTile extends StatefulWidget {
   FamilyStatus status = FamilyStatus.good;
   String name = "";
   String description = "";
   Uint8List avatar;
+  HealthOverview overview;
+  List<Supply> supply;
 
-  FamilyTile({this.status, this.name, this.description, this.avatar});
+  FamilyTile(
+      {this.status,
+      this.name,
+      this.description,
+      this.avatar,
+      this.overview,
+      this.supply});
+  FamilyTileStatus createState() => new FamilyTileStatus(this.status, this.name,
+      this.description, this.avatar, this.overview, this.supply);
+}
+
+class FamilyTileStatus extends State<FamilyTile> {
+  FamilyStatus status = FamilyStatus.good;
+  String name = "";
+  String description = "";
+  Uint8List avatar;
+  HealthOverview overview;
+  List<Supply> supply;
+  FamilyTileStatus(this.status, this.name, this.description, this.avatar,
+      this.overview, this.supply);
 
   List<Color> _getStatusColors() {
-    switch (status) {
-      case FamilyStatus.good:
+    switch (overview.overallBodyHealth) {
+      case OverallBodyHealth.good:
         return [Color(0xFF05A66B), Color(0xFF02734A)];
         break;
-      case FamilyStatus.ok:
+      case OverallBodyHealth.ok:
         return [Color(0xFFF2CB05), Color(0xFFF2B705)];
         break;
-      case FamilyStatus.bad:
+      case OverallBodyHealth.bad:
         return [Color(0xFFD92525), Color(0xFF8C0808)];
         break;
     }
+  }
+
+  String _getDescription() {
+    return "Supplies: " +
+        supply.length.toString() +
+        " ,Avg. temperature " +
+        overview.temperatureAverage.toString();
   }
 
   @override
@@ -77,7 +107,7 @@ class FamilyTile extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      description,
+                      _getDescription(),
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[400],
