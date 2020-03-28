@@ -20,7 +20,7 @@ class ContactsState extends State<Contacts> {
     refreshContacts();
 
     ContactInteractor interactor = new ContactInteractor();
-    interactor.getContacts(false).listen((value) {
+    interactor.getAllContacts().listen((value) {
       setState(() {
         request = value;
       });
@@ -93,6 +93,9 @@ class ContactsState extends State<Contacts> {
                                   .where((l) => l.phoneNumber.contains(number))
                                   .toList();
 
+                              bool accepted = (contactsTemp.length > 0 &&
+                                  contactsTemp.first.accepted);
+
                               return ListTile(
                                 leading: (c.avatar != null &&
                                         c.avatar.length > 0)
@@ -101,18 +104,21 @@ class ContactsState extends State<Contacts> {
                                     : CircleAvatar(child: Text(c.initials())),
                                 title: Text(c.displayName),
                                 subtitle: Text(number),
-                                trailing: CupertinoButton(
-                                  child: Text(
-                                    contactsTemp.length > 0
-                                        ? "Requested"
-                                        : "Request",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  onPressed: contactsTemp.length > 0
-                                      ? null
-                                      : () => _request(
-                                          number.trim().replaceAll(" ", "")),
-                                ),
+                                trailing: (!accepted)
+                                    ? CupertinoButton(
+                                        child: Text(
+                                          contactsTemp.length > 0
+                                              ? "Requested"
+                                              : "Request",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        onPressed: contactsTemp.length > 0
+                                            ? null
+                                            : () => _request(number
+                                                .trim()
+                                                .replaceAll(" ", "")),
+                                      )
+                                    : Material(),
                               );
                             })
                         : Text("Loading contacts...")),
