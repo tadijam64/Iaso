@@ -32,7 +32,7 @@ class ContactInteractor {
         FirebaseContact temp = new FirebaseContact();
         temp.accepted = false;
         temp.phoneNumber = user.phoneNumber;
-        print(contact.phoneNumber);
+       
         Firestore.instance
             .collection('users/' + data.documents[0].documentID + "/requests")
             .document(user.phoneNumber)

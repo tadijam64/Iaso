@@ -249,10 +249,10 @@ class FamilyState extends State<Family> {
         });
       });
       SuppliesFirebaseManager supI = new SuppliesFirebaseManager();
-      supI.getAllSupplies(val.id).map((contacts) async {
+      supI.getBuyList(val.id).map((contacts) async {
         List<Supply> family = new List();
 
-        for (var value in contacts.values) {
+        for (var value in contacts) {
           family.add(value);
         }
         return family;

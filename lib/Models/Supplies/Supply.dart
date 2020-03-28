@@ -2,18 +2,28 @@ enum SupplyStatus { ok, toBuy, bought }
 enum SupplyType { medicine, household }
 
 class Supply {
+  String id;
   String name;
   int amount;
   int status;
   int type;
+  int defaultAmount;
 
-  Supply({this.name, this.amount, this.status, this.type});
+  Supply(
+      {this.id,
+      this.name,
+      this.amount,
+      this.status,
+      this.type,
+      this.defaultAmount});
 
-  Supply.fromJson(Map<String, dynamic> json) {
+  Supply.fromJson(String documentId, Map<String, dynamic> json) {
+    id = documentId;
     name = json['name'];
     amount = json['amount'];
     status = json['status'];
     type = json['type'];
+    defaultAmount = json['defaultAmount'];
   }
 
   setStatus(SupplyStatus status) {
@@ -47,6 +57,7 @@ class Supply {
     data['amount'] = this.amount;
     data['status'] = this.status;
     data['type'] = this.type;
+    data['defaultAmount'] = this.defaultAmount;
     return data;
   }
 }
