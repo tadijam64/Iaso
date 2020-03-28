@@ -30,15 +30,21 @@ class Menu {
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.person,
-            size: 24,
+            size: 30,
           ),
-          title: Text("Family")),
+          title: Text(
+            "Family",
+            style: TextStyle(fontSize: 12),
+          )),
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.news,
-            size: 24,
+            size: 30,
           ),
-          title: Text("Daily report")),
+          title: Text(
+            "Daily report",
+            style: TextStyle(fontSize: 12),
+          )),
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.shopping_cart,
@@ -51,9 +57,12 @@ class Menu {
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.heart,
-            size: 24,
+            size: 30,
           ),
-          title: Text("Health "))
+          title: Text(
+            "Health",
+            style: TextStyle(fontSize: 12),
+          ))
     ];
   }
 }

@@ -52,11 +52,9 @@ class LoginPhoneNumberState extends State<LoginPhoneNumber> {
                     'SAVE DATA',
                     style: TextStyle(fontSize: 20),
                   ),
-                      onPressed: () {
+                  onPressed: () {
                     CheckPhoneNumberInteractor()
                         .checkPhoneNumber(phoneNumberTextEditControler.text);
-
-                    Settings().startUp();
                   },
                 ))
               ])),

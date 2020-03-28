@@ -9,16 +9,14 @@ class CheckPhoneNumberInteractor {
         .snapshots()
         .listen((data) async {
       if (data.documents.length > 0) {
-
         Settings().setUserId(data.documents[0].documentID);
-        //TODO: popraviti kada se što događa tako da može ispravno prebaciti na drugi ekran!
-     
-
+        Settings().startUp();
       } else {
         await Firestore.instance
             .collection('users')
             .add({'brojTelefona': phoneNumber}).then((result) {
           Settings().setUserId(result.documentID);
+          Settings().startUp();
         });
       }
     });

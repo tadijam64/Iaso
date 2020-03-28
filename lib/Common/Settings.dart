@@ -34,17 +34,17 @@ class Settings {
     }
 
     userId = prefs.getString("userId");
-    print(userId);
+
     if (userId != null) {
       _checkUserData().then((value) {
         if (value) {
-          Get.to(Pool());
+          Get.off(Pool());
         } else {
           Get.off(Family());
         }
       });
     } else {
-      Get.to(LoginPhoneNumber());
+      Get.off(LoginPhoneNumber());
     }
   }
 
