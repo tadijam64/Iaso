@@ -10,6 +10,7 @@ import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Models/User/User.dart';
 import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Widget/FamilyTile.dart';
+import 'package:iaso/Widget/RequestTile.dart';
 
 class Family extends StatefulWidget {
   FamilyState createState() => new FamilyState();
@@ -30,9 +31,9 @@ class FamilyState extends State<Family> {
   void initState() {
     super.initState();
     contactsInteractor.getMyRequests().listen((value) {
-      print(value);
       setState(() {
         requests = value;
+        _dohvatiListuRequestova();
       });
     });
     // Get all accepted contacts and show them
@@ -136,21 +137,14 @@ class FamilyState extends State<Family> {
           SizedBox(
             height: 20,
           ),
-          Container(
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-                color: Color(0xFFF7F7F7),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: Center(
-                child: Text(
-              "Family requests " + requests.length.toString(),
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.bold),
-            )),
-          ),
+          GestureDetector(
+              onTap: () => otvoriBox(),
+              child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF7F7F7),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  child: Column(children: requestTile))),
           new Column(
               children: familyUsers.map((f) {
             return Column(children: <Widget>[
@@ -163,9 +157,59 @@ class FamilyState extends State<Family> {
                   avatar: f.avatar,
                   description: "Random")
             ]);
-          }).toList()),
+          }).toList())
         ],
       ),
     ));
+  }
+
+  List<Widget> requestTile = new List();
+  bool otvoriRequestove = false;
+  _dohvatiListuRequestova() {
+    requestTile = new List();
+    requestTile.add(SizedBox(
+      height: 18,
+    ));
+    requestTile.add(Center(
+        child: Text(
+      "Family requests " + requests.length.toString(),
+      style: TextStyle(
+          fontSize: 14,
+          color: requests.length > 0 ? Colors.redAccent : Colors.grey[400],
+          fontWeight: FontWeight.bold),
+    )));
+    requestTile.add(SizedBox(
+      height: 18,
+    ));
+
+    if (otvoriRequestove) {
+      requests.forEach((f) {
+        ContactsService.getContactsForPhone(f.phoneNumber).then((val) {
+          if (val != null) {
+            setState(() {
+              requestTile.add(Column(children: <Widget>[
+                RequestTile(
+                  name: val.first.displayName,
+                  avatar:
+                      val.first.avatar != null && val.first.avatar.length > 0
+                          ? val.first.avatar
+                          : null,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ]));
+            });
+          }
+        });
+      });
+    }
+  }
+
+  otvoriBox() {
+    setState(() {
+      otvoriRequestove = !otvoriRequestove;
+      _dohvatiListuRequestova();
+    });
   }
 }
