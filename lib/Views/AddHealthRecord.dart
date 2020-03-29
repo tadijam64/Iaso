@@ -15,6 +15,9 @@ class AddHealthRecordState extends State<AddHealthRecord> {
   List<bool> coughButtonStateList = [true, false, false];
   List<bool> headacheStateList = [true, false];
   List<bool> musclePainStateList = [true, false];
+  List<bool> soreThroatStateList = [true, false];
+  List<bool> shortnessOfBreathList = [true, false];
+  List<bool> fatigueList = [true, false];
 
   AddHealthRecordState();
 
@@ -26,6 +29,9 @@ class AddHealthRecordState extends State<AddHealthRecord> {
         temperature: 36.5,
         musclePain: false,
         headache: false,
+        soreThroat: false,
+        shortnessOfBreath: false,
+        fatigue: false,
         cough: 0,
         timestamp: DateTime.now());
   }
@@ -89,158 +95,44 @@ class AddHealthRecordState extends State<AddHealthRecord> {
 
   _content() {
     return Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: <Widget>[
             Container(
               margin: EdgeInsets.all(16),
               width: double.infinity,
-              height: 30,
               child: Text("Please enter your symptoms",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ),
-            Container(
-                padding: const EdgeInsets.only(left: 24, top: 8),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Iaso.cough,
-                      color: healthCheck.cough != 0 ? Colors.blue : Colors.grey,
-                      size: 32,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(_getCoughType(healthCheck.cough))),
-                    Spacer(),
-                    ToggleButtons(
-                      children: <Widget>[
-                        Icon(Icons.insert_emoticon),
-                        Icon(Icons.invert_colors_off),
-                        Icon(Icons.invert_colors),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int buttonIndex = 0;
-                              buttonIndex < coughButtonStateList.length;
-                              buttonIndex++) {
-                            if (buttonIndex == index) {
-                              coughButtonStateList[buttonIndex] = true;
-                              healthCheck.cough = buttonIndex;
-                            } else {
-                              coughButtonStateList[buttonIndex] = false;
-                            }
-                          }
-                        });
-                      },
-                      isSelected: coughButtonStateList,
-                    ),
-                  ],
-                )),
-            Container(
-                padding: const EdgeInsets.only(left: 24, top: 8),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Iaso.headache,
-                      color: healthCheck.headache ? Colors.blue : Colors.grey,
-                      size: 32,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                            healthCheck.headache ? "Headache" : "No headache")),
-                    Spacer(),
-                    ToggleButtons(
-                      children: <Widget>[
-                        Icon(Icons.not_interested),
-                        Icon(Icons.check),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int buttonIndex = 0;
-                              buttonIndex < headacheStateList.length;
-                              buttonIndex++) {
-                            if (buttonIndex == index) {
-                              headacheStateList[buttonIndex] = true;
-                              healthCheck.headache = buttonIndex == 1;
-                            } else {
-                              headacheStateList[buttonIndex] = false;
-                            }
-                          }
-                        });
-                      },
-                      isSelected: headacheStateList,
-                    ),
-                  ],
-                )),
-            Container(
-                padding: const EdgeInsets.only(left: 24, top: 8),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Iaso.pain__1_,
-                      color: healthCheck.musclePain ? Colors.blue : Colors.grey,
-                      size: 32,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(healthCheck.musclePain
-                            ? "Muscle Pain"
-                            : "No body ache")),
-                    Spacer(),
-                    ToggleButtons(
-                      children: <Widget>[
-                        Icon(Icons.not_interested),
-                        Icon(Icons.check),
-                      ],
-                      onPressed: (int index) {
-                        setState(() {
-                          for (int buttonIndex = 0;
-                              buttonIndex < musclePainStateList.length;
-                              buttonIndex++) {
-                            if (buttonIndex == index) {
-                              musclePainStateList[buttonIndex] = true;
-                              healthCheck.musclePain = buttonIndex == 1;
-                            } else {
-                              musclePainStateList[buttonIndex] = false;
-                            }
-                          }
-                        });
-                      },
-                      isSelected: musclePainStateList,
-                    ),
-                  ],
-                )),
-            Container(
-                padding: const EdgeInsets.only(left: 24, top: 8),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Iaso.fever,
-                      size: 32,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text("Temperature: " +
-                            healthCheck.temperature.toString())),
-                    Spacer(),
-                    Slider(
-                      min: 35.0,
-                      max: 42.0,
-                      value: healthCheck.temperature,
-                      divisions: 14,
-                      onChanged: (value) {
-                        setState(() {
-                          healthCheck.temperature = value;
-                        });
-                      },
-                    ),
-                  ],
-                )),
+            _temp(),
+            SizedBox(
+              height: 10,
+            ),
+            _cough(),
+            SizedBox(
+              height: 10,
+            ),
+            _headache(),
+            SizedBox(
+              height: 10,
+            ),
+            _ache(),
+            SizedBox(
+              height: 10,
+            ),
+            _soreThroat(),
+            SizedBox(
+              height: 10,
+            ),
+            _shortnessOfBreath(),
+            SizedBox(
+              height: 10,
+            ),
+            _fatigue(),
             Expanded(child: Material()),
             Center(
                 child: CupertinoButton(
-                  color: CupertinoColors.activeBlue,
+              color: CupertinoColors.activeBlue,
               child: Text(
                 'Add record',
                 style: TextStyle(fontSize: 20),
@@ -250,6 +142,421 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 Get.back();
               },
             ))
+          ],
+        ));
+  }
+
+  _cough() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.cough,
+                    color: healthCheck.cough != 0 ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(_getCoughType(healthCheck.cough)))
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                height: 35,
+                child: ToggleButtons(
+                  children: <Widget>[
+                    Container(
+                        width: ((MediaQuery.of(context).size.width * 0.85) / 3),
+                        height: 50,
+                        child: Icon(Icons.insert_emoticon)),
+                    Container(
+                        width: ((MediaQuery.of(context).size.width * 0.85) / 3),
+                        height: 50,
+                        child: Icon(Icons.invert_colors_off)),
+                    Container(
+                        width: ((MediaQuery.of(context).size.width * 0.85) / 3),
+                        height: 50,
+                        child: Icon(Icons.invert_colors)),
+                  ],
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int buttonIndex = 0;
+                          buttonIndex < coughButtonStateList.length;
+                          buttonIndex++) {
+                        if (buttonIndex == index) {
+                          coughButtonStateList[buttonIndex] = true;
+                          healthCheck.cough = buttonIndex;
+                        } else {
+                          coughButtonStateList[buttonIndex] = false;
+                        }
+                      }
+                    });
+                  },
+                  isSelected: coughButtonStateList,
+                )),
+          ],
+        ));
+  }
+
+  _headache() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.headache,
+                    color: healthCheck.headache ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                          healthCheck.headache ? "Headache" : "No headache"))
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: ToggleButtons(
+                children: <Widget>[
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.not_interested)),
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.check)),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < headacheStateList.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        headacheStateList[buttonIndex] = true;
+                        healthCheck.headache = buttonIndex == 1;
+                      } else {
+                        headacheStateList[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                isSelected: headacheStateList,
+              ),
+            )
+          ],
+        ));
+  }
+
+  _soreThroat() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.headache,
+                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(healthCheck.soreThroat
+                          ? "Sore throat"
+                          : "No sore throat"))
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: ToggleButtons(
+                children: <Widget>[
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.not_interested)),
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.check)),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < soreThroatStateList.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        soreThroatStateList[buttonIndex] = true;
+                        healthCheck.soreThroat = buttonIndex == 1;
+                      } else {
+                        soreThroatStateList[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                isSelected: soreThroatStateList,
+              ),
+            )
+          ],
+        ));
+  }
+
+  _shortnessOfBreath() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.headache,
+                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(healthCheck.soreThroat
+                          ? "Shortness of breath"
+                          : "No shortness of breath"))
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: ToggleButtons(
+                children: <Widget>[
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.not_interested)),
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.check)),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < shortnessOfBreathList.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        shortnessOfBreathList[buttonIndex] = true;
+                        healthCheck.shortnessOfBreath = buttonIndex == 1;
+                      } else {
+                        shortnessOfBreathList[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                isSelected: shortnessOfBreathList,
+              ),
+            )
+          ],
+        ));
+  }
+
+  _fatigue() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.headache,
+                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                          healthCheck.soreThroat ? "Fatigue" : "No fatigue"))
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: ToggleButtons(
+                children: <Widget>[
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.not_interested)),
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.check)),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < fatigueList.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        fatigueList[buttonIndex] = true;
+                        healthCheck.fatigue = buttonIndex == 1;
+                      } else {
+                        fatigueList[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                isSelected: fatigueList,
+              ),
+            )
+          ],
+        ));
+  }
+
+  _temp() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.fever,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text("Temperature: " +
+                          healthCheck.temperature.toString())),
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: Slider(
+                min: 35.0,
+                max: 42.0,
+                value: healthCheck.temperature,
+                divisions: 14,
+                onChanged: (value) {
+                  setState(() {
+                    healthCheck.temperature = value;
+                  });
+                },
+              ),
+            )
+          ],
+        ));
+  }
+
+  _ache() {
+    return Container(
+        padding: const EdgeInsets.only(left: 10, top: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                width: (MediaQuery.of(context).size.width * 0.9),
+                child: Row(children: <Widget>[
+                  Icon(
+                    Iaso.pain__1_,
+                    color: healthCheck.musclePain ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(healthCheck.musclePain
+                          ? "Muscle Pain"
+                          : "No body ache")),
+                ])),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              width: (MediaQuery.of(context).size.width * 0.9),
+              height: 35,
+              child: ToggleButtons(
+                children: <Widget>[
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.not_interested)),
+                  Container(
+                      width: ((MediaQuery.of(context).size.width * 0.85) / 2),
+                      height: 50,
+                      child: Icon(Icons.check))
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    for (int buttonIndex = 0;
+                        buttonIndex < musclePainStateList.length;
+                        buttonIndex++) {
+                      if (buttonIndex == index) {
+                        musclePainStateList[buttonIndex] = true;
+                        healthCheck.musclePain = buttonIndex == 1;
+                      } else {
+                        musclePainStateList[buttonIndex] = false;
+                      }
+                    }
+                  });
+                },
+                isSelected: musclePainStateList,
+              ),
+            )
           ],
         ));
   }
