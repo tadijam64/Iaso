@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
-import 'package:iaso/Widget/HealthOverviewTile.dart';
+import 'package:iaso/Widget/TemperatureGraphTile.dart';
+import 'package:iaso/Widget/TemperatureOverviewTile.dart';
 
 class Health extends StatefulWidget {
   HealthState createState() => new HealthState();
@@ -21,7 +22,6 @@ class HealthState extends State<Health> {
 
   //Gradient
   Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
-  //Color gradientStart = Colors.green, gradientEnd = Colors.lightGreen;
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -93,14 +93,18 @@ class HealthState extends State<Health> {
           SizedBox(
             height: 20,
           ),
+          Center(child: TemperatureOverviewTile()),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             width: double.infinity,
-            height: 150,
+            height: 400,
             decoration: BoxDecoration(
                 color: Color(0xFFF7F7F7),
                 borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: Center(child: HealthTile()),
-          ),
+            child: Center(child: TemperatureGraphTile()),
+          )
         ],
       ),
     ));
