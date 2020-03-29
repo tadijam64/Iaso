@@ -72,6 +72,7 @@ class FamilyState extends State<Family> {
 
   //Gradient
   Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+
   //Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
 
   Widget pageScafold() {
