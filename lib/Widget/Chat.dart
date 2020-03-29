@@ -1,13 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ChatBubble extends StatefulWidget {
   bool right = true;
   String text = "";
+
   ChatBubble({this.text, this.right});
+
   @override
   State<StatefulWidget> createState() {
     return ChatBubbleState(this.text, this.right);
@@ -22,6 +21,7 @@ class ChatBubbleState extends State<ChatBubble> {
   ChatBubbleState(this.text, this.right);
 
   double _width = 0, _widthSmall = 0;
+
   //
 
   @override

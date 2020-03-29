@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
-import 'package:iaso/Widget/SupplyTile.dart';
 
 class SupplyAddNew extends StatefulWidget {
   SupplyAddNewState createState() => new SupplyAddNewState();

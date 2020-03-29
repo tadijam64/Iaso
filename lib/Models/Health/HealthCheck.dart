@@ -8,7 +8,6 @@ class HealthCheck {
   bool shortnessOfBreath;
   bool soreThroat;
   bool fatigue;
-  bool chills;
   int cough;
   DateTime timestamp;
 
@@ -20,7 +19,6 @@ class HealthCheck {
       this.fatigue,
       this.shortnessOfBreath,
       this.soreThroat,
-      //this.chills,
       this.cough,
       this.timestamp});
 
@@ -32,7 +30,6 @@ class HealthCheck {
     fatigue = json['fatigue'];
     shortnessOfBreath = json['shortnessOfBreath'];
     soreThroat = json['soreThroat'];
-    chills = json['chills'];
     cough = json['cough'];
     timestamp = DateTime.fromMillisecondsSinceEpoch(
         json['timestamp'].millisecondsSinceEpoch);
@@ -46,7 +43,6 @@ class HealthCheck {
     data['fatigue'] = this.fatigue;
     data['shortnessOfBreath'] = this.shortnessOfBreath;
     data['soreThroat'] = this.soreThroat;
-    data['chills'] = this.chills;
     data['cough'] = this.cough;
     data['timestamp'] = Timestamp.fromDate(this.timestamp);
     return data;

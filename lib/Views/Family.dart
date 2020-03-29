@@ -6,10 +6,6 @@ import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/Contacts/ContactInteractor.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
-import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
-import 'package:iaso/Models/Health/HealthOverview.dart';
-import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
-import 'package:iaso/Models/Supplies/Supply.dart';
 import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Models/User/User.dart';
 import 'package:iaso/Views/Contacts.dart';
@@ -160,26 +156,12 @@ class FamilyState extends State<Family> {
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                   child: Column(children: requestTile))),
           new Column(
-              children: familyUsers.map((f) {
-            HealthOverview ho = new HealthOverview();
-            ho.overallBodyHealth = OverallBodyHealth.good;
-            ho.temperatureAverage = 37;
-
-            List<Supply> sup = new List();
-
-            _prepareUserData(ho, sup, f.phoneNumber);
+              children: familyUsers.map((user) {
             return Column(children: <Widget>[
               SizedBox(
                 height: 10,
               ),
-              FamilyTile(
-                  overview: ho,
-                  status: FamilyStatus.ok,
-                  id: f.id,
-                  name: f.name,
-                  avatar: f.avatar,
-                  supply: sup,
-                  description: "Random")
+              FamilyTile(user: user)
             ]);
           }).toList())
         ],
@@ -236,41 +218,6 @@ class FamilyState extends State<Family> {
     setState(() {
       otvoriRequestove = !otvoriRequestove;
       _dohvatiListuRequestova();
-    });
-  }
-
-  void _prepareUserData(
-      HealthOverview ho, List<Supply> sup, String phoneNumber) {
-    GetUserInteractor userStream = new GetUserInteractor();
-    userStream.getUserByPhoneNumber(phoneNumber).then((currentUser) {
-      HealthFirebaseManager()
-          .getAllHealthReportEntries(currentUser.id)
-          .listen((onHealthList) {
-        HealthOverview hoTemp =
-            HealthFirebaseManager().getHealthOverview(currentUser, onHealthList);
-        setState(() {
-          ho.overallBodyHealth = hoTemp.overallBodyHealth;
-          ho.temperatureAverage = hoTemp.temperatureAverage;
-          ho.temperatureStatus = hoTemp.temperatureStatus;
-        });
-      });
-      SuppliesFirebaseManager supI = new SuppliesFirebaseManager();
-      supI.getBuyList(currentUser.id).map((contacts) async {
-        List<Supply> family = new List();
-
-        for (var value in contacts) {
-          family.add(value);
-        }
-        return family;
-      }).listen((onData) {
-        onData.then((onFamilyList) {
-          onFamilyList.forEach((f) {
-            sup.add(f);
-          });
-
-          setState(() {});
-        });
-      });
     });
   }
 }

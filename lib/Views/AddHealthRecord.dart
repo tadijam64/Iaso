@@ -6,8 +6,6 @@ import 'package:iaso/Icons/iaso_icons.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthCheck.dart';
 
-import 'Health.dart';
-
 class AddHealthRecord extends StatefulWidget {
   AddHealthRecordState createState() => new AddHealthRecordState();
 }
