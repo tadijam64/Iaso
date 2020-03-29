@@ -39,7 +39,7 @@ class SuppliesFirebaseManager {
         .collection('users')
         .document(userID)
         .collection("supplies")
-        .where("status", isGreaterThan: 1)
+        .where("status", isGreaterThan: 0)
         .snapshots()
         .map((queryResult) {
       return queryResult.documents.map((f) {
@@ -53,7 +53,7 @@ class SuppliesFirebaseManager {
         .collection('users')
         .document(userID)
         .collection("supplies")
-        .where("status", isGreaterThan: 2)
+        .where("status", isGreaterThan: 1)
         .snapshots()
         .map((queryResult) {
       return queryResult.documents.map((f) {

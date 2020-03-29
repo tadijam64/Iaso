@@ -71,7 +71,9 @@ class FamilyState extends State<Family> {
     });
   }
 
-  Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
+  //Gradient
+  Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+  //Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -92,9 +94,21 @@ class FamilyState extends State<Family> {
                     gradient:
                         LinearGradient(colors: [gradientStart, gradientEnd]),
                   ),
-                  middle: Text(
-                    "Family",
-                    style: TextStyle(color: Colors.white),
+                  middle: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        CupertinoIcons.person_solid,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Family",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
                   trailing: GestureDetector(
                       onTap: () => {Get.to(Contacts())},

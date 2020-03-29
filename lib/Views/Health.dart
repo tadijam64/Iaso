@@ -19,7 +19,9 @@ class HealthState extends State<Health> {
     super.initState();
   }
 
-  Color gradientStart = Colors.green, gradientEnd = Colors.lightGreen;
+  //Gradient
+  Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+  //Color gradientStart = Colors.green, gradientEnd = Colors.lightGreen;
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -37,25 +39,42 @@ class HealthState extends State<Health> {
                 navigationBar: CupertinoNavigationBar(
                   border: GradientCheatingBorder.fromBorderSide(
                     BorderSide.none,
-                    gradient: LinearGradient(colors: [gradientStart, gradientEnd]),
+                    gradient:
+                        LinearGradient(colors: [gradientStart, gradientEnd]),
                   ),
-                  middle: Text(
-                    "Health",
-                    style: TextStyle(color: Colors.white),
+                  middle: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        CupertinoIcons.heart_solid,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Health",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
                 child: Scaffold(
                   body: SafeArea(
                       child: Container(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [gradientStart, gradientEnd]),
+                      gradient:
+                          LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
                     child: Padding(
                         padding: EdgeInsets.only(top: 10.0),
                         child: Container(
                           width: double.infinity,
                           child: _content(),
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(70.0))),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(70.0))),
                         )),
                   )),
                 ),
@@ -77,7 +96,9 @@ class HealthState extends State<Health> {
           Container(
             width: double.infinity,
             height: 150,
-            decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.all(Radius.circular(5))),
+            decoration: BoxDecoration(
+                color: Color(0xFFF7F7F7),
+                borderRadius: BorderRadius.all(Radius.circular(5))),
             child: Center(child: HealthTile()),
           ),
         ],

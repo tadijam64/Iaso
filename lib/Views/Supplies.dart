@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
@@ -42,9 +44,21 @@ class SuppliesState extends State<Supplies> {
                       gradient:
                           LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
-                    middle: Text(
-                      "Supplies",
-                      style: TextStyle(color: Colors.white),
+                    middle: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          CupertinoIcons.shopping_cart,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Supplies",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                   child: Scaffold(
@@ -120,7 +134,11 @@ class SuppliesState extends State<Supplies> {
     }
   }
 
+  Stream<List<Supply>> supplies;
+
   _showSupplies() {
+    supplies = SuppliesFirebaseManager().getAllSupplies(Settings().userId);
+
     return Column(children: <Widget>[
       SizedBox(
         height: 35,
@@ -131,8 +149,7 @@ class SuppliesState extends State<Supplies> {
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                   child: Column(children: <Widget>[
                     StreamBuilder<List<Supply>>(
-                      stream: SuppliesFirebaseManager()
-                          .getAllSupplies(Settings().userId),
+                      stream: supplies,
                       builder: (BuildContext context,
                           AsyncSnapshot<List<Supply>> supplies) {
                         if (supplies.hasError)
@@ -175,6 +192,8 @@ class SuppliesState extends State<Supplies> {
   }
 
   _showBuyList() {
+    supplies = null;
+
     return Column(children: <Widget>[
       SizedBox(
         height: 15,
@@ -183,7 +202,7 @@ class SuppliesState extends State<Supplies> {
         width: double.infinity,
         alignment: Alignment.centerRight,
         child: CupertinoButton(
-            child: Text("Restock all"), onPressed: () => _reStock()),
+            child: Text("Restock selected"), onPressed: () => _reStock()),
       ),
       Expanded(
           child: SingleChildScrollView(
@@ -226,13 +245,19 @@ class SuppliesState extends State<Supplies> {
     ]);
   }
 
+  StreamSubscription sub;
   _reStock() {
-    SuppliesFirebaseManager().getBuyList(Settings().userId).listen((data) {
+    sub =
+        SuppliesFirebaseManager().getBuyList(Settings().userId).listen((data) {
       data.forEach((f) {
-        f.amount += f.defaultAmount;
-        f.setStatus(SupplyStatus.ok);
-        SuppliesFirebaseManager().updateSupply(f.id, f);
+        if (f.status == 2) {
+          f.amount += f.defaultAmount;
+          f.setStatus(SupplyStatus.ok);
+          SuppliesFirebaseManager().updateSupply(f.id, f);
+        }
       });
+
+      sub.cancel();
     });
   }
 }

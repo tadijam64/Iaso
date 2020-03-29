@@ -70,7 +70,7 @@ class SupplyTile extends StatelessWidget {
   }
 
   _addToBuyList() {
-    suply.status = 2;
+    suply.setStatus(SupplyStatus.toBuy);
     SuppliesFirebaseManager i = new SuppliesFirebaseManager();
     i.updateSupply(suply.id, suply);
   }

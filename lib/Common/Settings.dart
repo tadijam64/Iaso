@@ -6,6 +6,7 @@ import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/LoginPhoneNumber.dart';
 import 'package:iaso/Views/Pool.dart';
 import 'package:iaso/Views/Supplies.dart';
+import 'package:iaso/Widget/FamilyTile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {
@@ -50,7 +51,7 @@ class Settings {
           if (hasUserAddedContacts == null || !hasUserAddedContacts) {
             Get.off(Contacts());
           } else {
-            Get.off(Supplies());
+            Get.off(Family());
           }
         }
       });

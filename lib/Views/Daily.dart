@@ -13,7 +13,7 @@ class Daily extends StatefulWidget {
 class DailyState extends State<Daily> {
   @override
   Widget build(BuildContext context) {
-    GetDailyReportInteractor()
+    /* GetDailyReportInteractor()
         .getReport(new ReportQuery(question: "What is the report for today?"))
         .then((response) {
       print(response.toJson().toString());
@@ -26,11 +26,13 @@ class DailyState extends State<Daily> {
           .then((response) {
         print(response.toJson().toString());
       });
-    });
+    });*/
     return pageScafold();
   }
 
-  Color gradientStart = Colors.blue, gradientEnd = Color(0xFF135a91);
+  //Gradient
+  Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+  //Color gradientStart = Colors.blue, gradientEnd = Color(0xFF135a91);
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -51,9 +53,21 @@ class DailyState extends State<Daily> {
                       gradient:
                           LinearGradient(colors: [gradientStart, gradientEnd]),
                     ),
-                    middle: Text(
-                      "Daily report",
-                      style: TextStyle(color: Colors.white),
+                    middle: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          CupertinoIcons.news,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Daily report",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                   child: Scaffold(
@@ -81,10 +95,10 @@ class DailyState extends State<Daily> {
   }
 
   _content() {
-    return WebView(
+    /*return WebView(
       initialUrl:
           'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
       javascriptMode: JavascriptMode.unrestricted,
-    );
+    );*/
   }
 }

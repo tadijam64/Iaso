@@ -18,7 +18,7 @@ class BuyTileState extends State<BuyTile> {
   TextEditingController controller;
 
   BuyTileState(this.suply, this.controller) {
-    _value = suply.status == 2 ? false : true;
+    _value = suply.status == 1 ? false : true;
   }
 
   @override
@@ -74,10 +74,10 @@ class BuyTileState extends State<BuyTile> {
   bool _value = false;
 
   _addToBuyList() {
-    if (_value)
-      suply.status = 2;
+    if (!_value)
+      suply.status = 1;
     else
-      suply.status = 3;
+      suply.status = 2;
 
     SuppliesFirebaseManager i = new SuppliesFirebaseManager();
     i.updateSupply(suply.id, suply);
