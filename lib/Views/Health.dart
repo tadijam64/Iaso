@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Widget/TemperatureGraphTile.dart';
 import 'package:iaso/Widget/TemperatureOverviewTile.dart';
+
+import 'AddHealthRecord.dart';
 
 class Health extends StatefulWidget {
   final String userId;
@@ -74,6 +77,12 @@ class HealthState extends State<Health> {
                       ),
                     ],
                   ),
+                  trailing: GestureDetector(
+                      onTap: () => {Get.to(AddHealthRecord())},
+                      child: Icon(
+                        CupertinoIcons.create_solid,
+                        color: Colors.white,
+                      )),
                 ),
                 child: Scaffold(
                   body: SafeArea(
