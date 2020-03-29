@@ -20,7 +20,7 @@ class HealthCheck {
       this.fatigue,
       this.shortnessOfBreath,
       this.soreThroat,
-      this.chills,
+      //this.chills,
       this.cough,
       this.timestamp});
 
