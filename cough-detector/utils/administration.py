@@ -41,7 +41,6 @@ def parse_args():
     parser.add_argument('-dep', '--resdepth', type=int, default=18,
                         help='ResNet default depth')
     
-                     help='Wide resnet widen factor')
     # optimization
     parser.add_argument('-l', '--learning_rate', type=float, default=0.1,
                         help='Base learning rate')
@@ -61,17 +60,3 @@ def parse_args():
     args = parser.parse_args()
     print('input args:\n', json.dumps(vars(args), indent=4, separators=(',', ':')))
     return args
-
-
-    # removed args
-    # parser.add_argument('-data', '--dataset', type=str, default='Cifar-10',
-    #                     help='Which dataset to use')
-    # parser.add_argument('-norm', '--dataset_norm_type', type=str, default='standardize',
-    #                     help='How to normalize data? Standardize | one')
-    # parser.add_argument('-tbatch', '--test_batch_size', type=int, default=100,
-    #                     help='Test Batch Size')
-    # parser.add_argument('-aug', '--data_aug', type=str, nargs='+',
-    #                     default=['NONE'],#['random_h_flip', 'random_crop'],
-    #                     help='Data augmentation?')
-    # parser.add_argument('-wf', '--widen_factor', type=int, default=2,
-    #    
