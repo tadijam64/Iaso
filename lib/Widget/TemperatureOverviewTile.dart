@@ -1,15 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
 
 class TemperatureOverviewTile extends StatefulWidget {
+  final String userID;
+
+  TemperatureOverviewTile({this.userID});
+
   TemperatureOverviewTileState createState() =>
-      new TemperatureOverviewTileState();
+      new TemperatureOverviewTileState(userID: userID);
 }
 
 class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
+  final String userID;
+
+  TemperatureOverviewTileState({this.userID});
+
   TemperatureStatus status = TemperatureStatus.good;
   String temperatureAverage = "";
   HealthFirebaseManager healthManager = HealthFirebaseManager();
@@ -30,9 +37,7 @@ class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
   @override
   void initState() {
     super.initState();
-    HealthFirebaseManager()
-        .getAllHealthReportEntries(Settings().userId)
-        .listen((value) {
+    HealthFirebaseManager().getAllHealthReportEntries(userID).listen((value) {
       setState(() {
         HealthOverview healthOverview;
         if (value != null) {
@@ -71,7 +76,7 @@ class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       child: Center(
                           child: Text(
-                        "Your average temperature: " + temperatureAverage,
+                        "Average temperature: " + temperatureAverage,
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       )),
                     ),

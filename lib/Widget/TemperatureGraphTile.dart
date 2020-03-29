@@ -1,16 +1,24 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthCheck.dart';
 import 'package:iaso/Widget/HealthOverviewTile.dart';
 
 class TemperatureGraphTile extends StatefulWidget {
-  TemperatureGraphTileState createState() => new TemperatureGraphTileState();
+  final String userID;
+
+  TemperatureGraphTile({this.userID});
+
+  TemperatureGraphTileState createState() =>
+      new TemperatureGraphTileState(userID: userID);
 }
 
 class TemperatureGraphTileState extends State<TemperatureGraphTile> {
+  final String userID;
+
+  TemperatureGraphTileState({this.userID});
+
   HealthFirebaseManager healthManager = HealthFirebaseManager();
   List<HealthCheck> healthChecks = List();
   HealthCheck selectedHealthCheck = new HealthCheck(
@@ -23,9 +31,7 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
   @override
   void initState() {
     super.initState();
-    HealthFirebaseManager()
-        .getAllHealthReportEntries(Settings().userId)
-        .listen((value) {
+    HealthFirebaseManager().getAllHealthReportEntries(userID).listen((value) {
       setState(() {
         healthChecks = value;
         healthChecks.sort((item1, item2) {

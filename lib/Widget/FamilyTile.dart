@@ -1,13 +1,17 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
+import 'package:iaso/Views/Health.dart';
 
 enum FamilyStatus { good, ok, bad }
 
 class FamilyTile extends StatefulWidget {
   FamilyStatus status = FamilyStatus.good;
+  String id = "";
   String name = "";
   String description = "";
   Uint8List avatar;
@@ -15,25 +19,29 @@ class FamilyTile extends StatefulWidget {
   List<Supply> supply;
 
   FamilyTile(
-      {this.status,
+      {this.id,
+      this.status,
       this.name,
       this.description,
       this.avatar,
       this.overview,
       this.supply});
-  FamilyTileStatus createState() => new FamilyTileStatus(this.status, this.name,
-      this.description, this.avatar, this.overview, this.supply);
+
+  FamilyTileStatus createState() => new FamilyTileStatus(this.id, this.status,
+      this.name, this.description, this.avatar, this.overview, this.supply);
 }
 
 class FamilyTileStatus extends State<FamilyTile> {
   FamilyStatus status = FamilyStatus.good;
+  String id = "";
   String name = "";
   String description = "";
   Uint8List avatar;
   HealthOverview overview;
   List<Supply> supply;
-  FamilyTileStatus(this.status, this.name, this.description, this.avatar,
-      this.overview, this.supply);
+
+  FamilyTileStatus(this.id, this.status, this.name, this.description,
+      this.avatar, this.overview, this.supply);
 
   List<Color> _getStatusColors() {
     switch (overview.overallBodyHealth) {
@@ -64,58 +72,64 @@ class FamilyTileStatus extends State<FamilyTile> {
         decoration: BoxDecoration(
             color: Color(0xFFF7F7F7),
             borderRadius: BorderRadius.all(Radius.circular(5))),
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Stack(
-                  alignment: AlignmentDirectional.center,
+        child: CupertinoButton(
+            child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: _getStatusColors()),
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                          child: Text(
-                        name.substring(0, 2).toUpperCase(),
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )),
+                    Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: <Widget>[
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                              gradient:
+                                  LinearGradient(colors: _getStatusColors()),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                          child: Center(
+                              child: Text(
+                            name.substring(0, 2).toUpperCase(),
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          )),
+                        ),
+                        avatar != null
+                            ? CircleAvatar(
+                                radius: 25,
+                                backgroundImage: MemoryImage(avatar),
+                              )
+                            : Material()
+                      ],
                     ),
-                    avatar != null
-                        ? CircleAvatar(
-                            radius: 25,
-                            backgroundImage: MemoryImage(avatar),
-                          )
-                        : Material()
-                  ],
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      name,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.grey[900],
-                          fontWeight: FontWeight.bold),
+                    SizedBox(
+                      width: 20,
                     ),
-                    Text(
-                      _getDescription(),
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[400],
-                          fontWeight: FontWeight.bold),
-                    )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          name,
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey[900],
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _getDescription(),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[400],
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ],
-                )
-              ],
-            )));
+                )),
+            onPressed: () {
+              Get.to(Health(userId: id));
+            }));
   }
 }

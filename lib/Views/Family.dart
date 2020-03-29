@@ -174,6 +174,7 @@ class FamilyState extends State<Family> {
               FamilyTile(
                   overview: ho,
                   status: FamilyStatus.ok,
+                  id: f.id,
                   name: f.name,
                   avatar: f.avatar,
                   supply: sup,
