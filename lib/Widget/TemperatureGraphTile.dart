@@ -1,8 +1,11 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' as mat;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthCheck.dart';
+import 'package:iaso/Views/AddHealthRecord.dart';
 import 'package:iaso/Widget/HealthOverviewTile.dart';
 
 class TemperatureGraphTile extends StatefulWidget {
@@ -48,28 +51,61 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: <Widget>[
-        Expanded(
-            child: TimeSeriesChart(
-          mapChartData(healthChecks),
-          animate: true,
-          primaryMeasureAxis: NumericAxisSpec(
-              tickProviderSpec: new BasicNumericTickProviderSpec(
-                  zeroBound: false, desiredTickCount: 5)),
-          behaviors: [new PanAndZoomBehavior()],
-          selectionModels: [
-            new SelectionModelConfig(
-              type: SelectionModelType.info,
-              changedListener: _onSelectionChanged,
-            )
-          ],
-        )),
-        SizedBox(
-          height: 20,
-        ),
-        HealthOverviewTile(healthCheck: selectedHealthCheck)
-      ]),
-    );
+        color: Colors.white,
+        child: Column(children: <Widget>[
+          Container(
+              width: double.infinity,
+              height: 200,
+              decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: TimeSeriesChart(
+                    mapChartData(healthChecks),
+                    animate: true,
+                    primaryMeasureAxis: NumericAxisSpec(
+                        tickProviderSpec: new BasicNumericTickProviderSpec(
+                            zeroBound: false, desiredTickCount: 5)),
+                    behaviors: [new PanAndZoomBehavior()],
+                    selectionModels: [
+                      new SelectionModelConfig(
+                        type: SelectionModelType.info,
+                        changedListener: _onSelectionChanged,
+                      )
+                    ],
+                  ))),
+          SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+              onTap: () => {Get.to(AddHealthRecord())},
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: mat.Color(0xFFD92525),
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.create, color: Colors.white, size: 20),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "START NEW CHECK",
+                      style: mat.TextStyle(color: Colors.white, fontSize: 20),
+                    )
+                  ],
+                ),
+              )),
+          SizedBox(
+            height: 20,
+          ),
+          HealthOverviewTile(healthCheck: selectedHealthCheck)
+        ]));
   }
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.

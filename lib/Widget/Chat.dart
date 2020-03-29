@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ChatBubble extends StatefulWidget {
   bool right = true;
@@ -41,19 +42,18 @@ class ChatBubbleState extends State<ChatBubble> {
               )
             : Material(),
         AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          alignment: Alignment.centerLeft,
-          width: _width,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-              color: right ? gradientStart : Colors.white),
-          child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(text,
-                  style: TextStyle(
-                      color: right ? Colors.white : Colors.grey[800],
-                      fontSize: 16))),
-        ),
+            duration: Duration(milliseconds: 300),
+            alignment: Alignment.centerLeft,
+            width: _width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(7)),
+                color: right ? gradientStart : Colors.white),
+            child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(text,
+                    style: TextStyle(
+                        color: right ? Colors.white : Colors.grey[800],
+                        fontSize: 16)))),
         !right
             ? Container(
                 width: (MediaQuery.of(context).size.width * 0.12),
