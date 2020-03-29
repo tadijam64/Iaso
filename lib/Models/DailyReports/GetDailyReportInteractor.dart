@@ -11,8 +11,8 @@ class GetDailyReportInteractor {
   static BaseOptions options = new BaseOptions(
       baseUrl:
           "https://codevscovid19.azurewebsites.net/qnamaker/knowledgebases/8a3ce91f-31e8-4ca2-84b3-96642087dfb4",
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
       headers: headers);
   Dio dio = new Dio(options);
 

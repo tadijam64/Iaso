@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ChatBubble extends StatefulWidget {
   bool right = true;
@@ -49,11 +50,7 @@ class ChatBubbleState extends State<ChatBubble> {
                 borderRadius: BorderRadius.all(Radius.circular(7)),
                 color: right ? gradientStart : Colors.white),
             child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(text,
-                    style: TextStyle(
-                        color: right ? Colors.white : Colors.grey[800],
-                        fontSize: 16)))),
+                padding: EdgeInsets.all(10), child: MarkdownBody(data: text))),
         !right
             ? Container(
                 width: (MediaQuery.of(context).size.width * 0.12),

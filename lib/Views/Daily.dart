@@ -270,6 +270,28 @@ class DailyState extends State<Daily> {
             duration: Duration(milliseconds: 500),
             curve: Curves.ease);
       });
+    }, onError: (e) {
+      setState(() {
+        messageBox.remove(iasoTyping);
+        iasoTyping = null;
+
+        messageBox.add(
+          ChatBubble(
+            right: false,
+            text:
+                "Sorry I encountered an Internet issue while looking for an answer, what was your question again?",
+          ),
+        );
+        messageBox.add(
+          SizedBox(
+            height: 10,
+          ),
+        );
+        scrollController.animateTo(
+            scrollController.position.maxScrollExtent + 50,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.ease);
+      });
     });
   }
 }
