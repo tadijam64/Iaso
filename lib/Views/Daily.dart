@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/DailyReports/GetDailyReportInteractor.dart';
 import 'package:iaso/Models/DailyReports/ReportQuery.dart';
 import 'package:iaso/Widget/Chat.dart';
 import 'package:iaso/Widget/Typing.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class Daily extends StatefulWidget {
   DailyState createState() => new DailyState();
@@ -198,6 +196,7 @@ class DailyState extends State<Daily> {
   }
 
   Widget iasoTyping = null;
+
   _sendMessage(String message) {
     if (iasoTyping != null) {
       messageBox.remove(iasoTyping);

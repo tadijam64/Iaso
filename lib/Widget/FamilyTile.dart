@@ -1,69 +1,71 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
+import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
+import 'package:iaso/Models/User/User.dart';
 import 'package:iaso/Views/Health.dart';
 
-enum FamilyStatus { good, ok, bad }
-
 class FamilyTile extends StatefulWidget {
-  FamilyStatus status = FamilyStatus.good;
-  String id = "";
-  String name = "";
-  String description = "";
-  Uint8List avatar;
-  HealthOverview overview;
-  List<Supply> supply;
+  User user;
 
-  FamilyTile(
-      {this.id,
-      this.status,
-      this.name,
-      this.description,
-      this.avatar,
-      this.overview,
-      this.supply});
+  FamilyTile({this.user});
 
-  FamilyTileStatus createState() => new FamilyTileStatus(this.id, this.status,
-      this.name, this.description, this.avatar, this.overview, this.supply);
+  FamilyTileStatus createState() => new FamilyTileStatus(this.user);
 }
 
 class FamilyTileStatus extends State<FamilyTile> {
-  FamilyStatus status = FamilyStatus.good;
-  String id = "";
-  String name = "";
-  String description = "";
-  Uint8List avatar;
-  HealthOverview overview;
-  List<Supply> supply;
+  User user;
+  HealthOverview overview = HealthOverview(
+      healthScore: 0,
+      temperatureAverage: 0.0,
+      temperatureStatus: TemperatureStatus.good,
+      overallBodyHealth: OverallBodyHealth.excellent);
+  List<Supply> supply = List();
 
-  FamilyTileStatus(this.id, this.status, this.name, this.description,
-      this.avatar, this.overview, this.supply);
+  FamilyTileStatus(this.user);
+
+  @override
+  void initState() {
+    super.initState();
+    _prepareUserData(user);
+  }
 
   List<Color> _getStatusColors() {
     switch (overview.overallBodyHealth) {
       case OverallBodyHealth.excellent:
-        return [Color(0xFF5fa68c), Color(0xFF489a7c)];
-        break;
+        return [Color(0xFF5FA68C), Color(0xFF489A7C)];
       case OverallBodyHealth.veryGood:
         return [Color(0xFF187452), Color(0xFF156749)];
-        break;
       case OverallBodyHealth.good:
-        return [Color(0xFF1b815c), Color(0xFF02734a)];
-        break;
+        return [Color(0xFF1B815C), Color(0xFF02734A)];
       case OverallBodyHealth.ok:
         return [Color(0xFF05A66B), Color(0xFF02734A)];
-        break;
       case OverallBodyHealth.bad:
         return [Color(0xFFF2CB05), Color(0xFFF2B705)];
-        break;
       case OverallBodyHealth.veryBad:
         return [Color(0xFFD92525), Color(0xFF8C0808)];
-        break;
+      default:
+        return [Color(0xFFDFF25), Color(0xFF8FF08)];
     }
+  }
+
+  void _prepareUserData(User user) {
+    HealthFirebaseManager()
+        .getAllHealthReportEntries(user.id)
+        .listen((onHealthList) {
+      HealthOverview healthOverview =
+          HealthFirebaseManager().getHealthOverview(user, onHealthList);
+      SuppliesFirebaseManager supI = new SuppliesFirebaseManager();
+      supI.getBuyList(user.id).listen((supplies) {
+        setState(() {
+          overview = healthOverview;
+          supply = supplies;
+        });
+      });
+    });
   }
 
   String _getDescription() {
@@ -100,14 +102,14 @@ class FamilyTileStatus extends State<FamilyTile> {
                                   BorderRadius.all(Radius.circular(30))),
                           child: Center(
                               child: Text(
-                            name.substring(0, 2).toUpperCase(),
+                            user.name.substring(0, 2).toUpperCase(),
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           )),
                         ),
-                        avatar != null
+                        user.avatar != null
                             ? CircleAvatar(
                                 radius: 25,
-                                backgroundImage: MemoryImage(avatar),
+                                backgroundImage: MemoryImage(user.avatar),
                               )
                             : Material()
                       ],
@@ -120,7 +122,7 @@ class FamilyTileStatus extends State<FamilyTile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          name,
+                          user.name,
                           style: TextStyle(
                               fontSize: 20,
                               color: Colors.grey[900],
@@ -138,7 +140,7 @@ class FamilyTileStatus extends State<FamilyTile> {
                   ],
                 )),
             onPressed: () {
-              Get.to(Health(userId: id));
+              Get.to(Health(userId: user.id));
             }));
   }
 }

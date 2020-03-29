@@ -11,7 +11,7 @@ class Contacts extends StatefulWidget {
 }
 
 class ContactsState extends State<Contacts> {
-  List<Contact> contacts = null;
+  List<Contact> contacts = List();
   List<FirebaseContact> request = new List();
 
   @override

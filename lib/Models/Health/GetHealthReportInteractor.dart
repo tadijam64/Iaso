@@ -60,8 +60,8 @@ class HealthFirebaseManager {
     if (user.lastContactWithInfectedPerson != null) {
       riskScore += user.lastContactWithInfectedPerson
               .isBefore(DateTime.now().subtract(Duration(days: 6)))
-          ? 1
-          : 0 * 0.5;
+          ? 0
+          : 1 * 0.5;
     }
 
     return min(max(riskScore, 0), 1);
@@ -106,17 +106,35 @@ class HealthFirebaseManager {
 
     healthChecks.sort((item1, item2) {
       if (item1.timestamp.isAfter(item2.timestamp)) {
-        return 1;
-      } else {
         return 0;
+      } else {
+        return 1;
       }
     });
 
     double healthScoreSum = 0.0;
 
-    for (var i = 1; i < healthChecks.length + 1; i++) {
+    for (var i = 0; i < healthChecks.length.clamp(0, 6); i++) {
       healthScoreSum +=
-          (calculateHealthRiskScore(user, healthChecks[i - 1]) / i);
+          (calculateHealthRiskScore(user, healthChecks[i])) * (1 / 10 * i);
+    }
+    // worst per case score 427 (allSymptoms + riskScore)
+    double worstTotalScore = 531;
+    double totalHealthScore = (healthScoreSum * 100).floor() / worstTotalScore;
+
+    OverallBodyHealth bodyHealth;
+    if (totalHealthScore < 0.1) {
+      bodyHealth = OverallBodyHealth.excellent;
+    } else if (totalHealthScore >= 0.1 && totalHealthScore <= 0.2) {
+      bodyHealth = OverallBodyHealth.veryGood;
+    } else if (totalHealthScore > 0.2 && totalHealthScore <= 0.4) {
+      bodyHealth = OverallBodyHealth.good;
+    } else if (totalHealthScore > 0.4 && totalHealthScore <= 0.6) {
+      bodyHealth = OverallBodyHealth.ok;
+    } else if (totalHealthScore > 0.6 && totalHealthScore <= 0.8) {
+      bodyHealth = OverallBodyHealth.bad;
+    } else if (totalHealthScore > 0.8 && totalHealthScore <= 1.0) {
+      bodyHealth = OverallBodyHealth.veryBad;
     }
 
     List<double> temperatureList =
@@ -130,31 +148,6 @@ class HealthFirebaseManager {
     } else {
       temperatureStatus = TemperatureStatus.bad;
     }
-
-    int totalHealthScore =
-        ((healthScoreSum / healthChecks.length) * 100).floor();
-
-    OverallBodyHealth bodyHealth;
-    if (totalHealthScore <= 105) {
-      bodyHealth = OverallBodyHealth.excellent;
-    } else if (healthScoreSum > 105 &&
-        healthScoreSum < 210 &&
-        bodyHealth == OverallBodyHealth.good) {
-      bodyHealth = OverallBodyHealth.ok;
-    } else if (healthScoreSum > 210 &&
-        healthScoreSum < 315 &&
-        bodyHealth == OverallBodyHealth.ok) {
-      bodyHealth = OverallBodyHealth.ok;
-    } else if (healthScoreSum > 315 &&
-        healthScoreSum < 420 &&
-        bodyHealth == OverallBodyHealth.bad) {
-      bodyHealth = OverallBodyHealth.ok;
-    } else if (healthScoreSum > 420 &&
-        healthScoreSum < 525 &&
-        bodyHealth == OverallBodyHealth.veryBad) {
-      bodyHealth = OverallBodyHealth.ok;
-    }
-
     return new HealthOverview(
         temperatureAverage: temperatureAverage,
         temperatureStatus: temperatureStatus,
