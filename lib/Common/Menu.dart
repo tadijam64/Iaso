@@ -9,16 +9,20 @@ class Menu {
   void transfer(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Family()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Family()));
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Daily()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Daily()));
         break;
       case 2:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Supplies()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Supplies()));
         break;
       case 3:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Health()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Health()));
         break;
       default:
         break;
@@ -38,11 +42,11 @@ class Menu {
           )),
       BottomNavigationBarItem(
           icon: Icon(
-            CupertinoIcons.news,
-            size: 30,
+            Icons.chat,
+            size: 25,
           ),
           title: Text(
-            "Daily report",
+            "Iaso",
             style: TextStyle(fontSize: 12),
           )),
       BottomNavigationBarItem(
