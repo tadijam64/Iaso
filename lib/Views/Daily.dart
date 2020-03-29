@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/DailyReports/GetDailyReportInteractor.dart';
 import 'package:iaso/Models/DailyReports/ReportQuery.dart';
+import 'package:iaso/Widget/Chat.dart';
+import 'package:iaso/Widget/Typing.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Daily extends StatefulWidget {
@@ -30,9 +33,14 @@ class DailyState extends State<Daily> {
     return pageScafold();
   }
 
+  TextEditingController controller = new TextEditingController();
+  ScrollController scrollController = new ScrollController();
+
   //Gradient
   Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
   //Color gradientStart = Colors.blue, gradientEnd = Color(0xFF135a91);
+
+  List<Widget> messageBox = new List();
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -57,14 +65,14 @@ class DailyState extends State<Daily> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          CupertinoIcons.news,
+                          Icons.chat,
                           color: Colors.white,
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
-                          "Daily report",
+                          "Iaso",
                           style: TextStyle(color: Colors.white),
                         ),
                       ],
@@ -82,7 +90,7 @@ class DailyState extends State<Daily> {
                             child: Container(
                               child: _content(),
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Colors.grey[100],
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(70.0))),
                             )),
@@ -95,10 +103,110 @@ class DailyState extends State<Daily> {
   }
 
   _content() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+            child: Padding(
+          padding: EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: messageBox,
+            ),
+          ),
+        )),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                  child: Container(
+                height: 40,
+                child: CupertinoTextField(
+                  keyboardType: TextInputType.multiline,
+                  controller: controller,
+                  maxLines: 999,
+                ),
+              )),
+              SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                  onTap: () => _sendMessage(),
+                  child: Icon(
+                    Icons.send,
+                    size: 35,
+                    color: gradientStart,
+                  ))
+            ],
+          ),
+        ),
+      ],
+    );
+
     /*return WebView(
-      initialUrl:
-          'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
-      javascriptMode: JavascriptMode.unrestricted,
-    );*/
+                      initialUrl:
+                          'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
+                      javascriptMode: JavascriptMode.unrestricted,
+                    );*/
+  }
+
+  _sendMessage() {
+    String message = controller.text;
+    controller.text = "";
+    FocusScope.of(context).unfocus();
+
+    setState(() {
+      messageBox.add(
+        ChatBubble(
+          right: true,
+          text: message,
+        ),
+      );
+
+      messageBox.add(
+        SizedBox(
+          height: 10,
+        ),
+      );
+    });
+
+    Widget typing = Typing();
+    setState(() {
+      messageBox.add(
+        typing,
+      );
+    });
+
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 500), curve: Curves.ease);
+
+    GetDailyReportInteractor()
+        .getReport(new ReportQuery(question: message))
+        .then((response) {
+      setState(() {
+        messageBox.removeLast();
+
+        response.answers.forEach((f) {
+          messageBox.add(
+            ChatBubble(
+              right: false,
+              text: f.answer,
+            ),
+          );
+          messageBox.add(
+            SizedBox(
+              height: 10,
+            ),
+          );
+        });
+
+        scrollController.animateTo(scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 500), curve: Curves.ease);
+      });
+    });
   }
 }

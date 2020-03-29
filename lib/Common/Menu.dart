@@ -24,9 +24,11 @@ class Menu {
         break;
       case 3:
         Navigator.push(
+
             context,
             MaterialPageRoute(
                 builder: (context) => new Health(userId: Settings().userId)));
+
         break;
       default:
         break;
@@ -46,11 +48,11 @@ class Menu {
           )),
       BottomNavigationBarItem(
           icon: Icon(
-            CupertinoIcons.news,
-            size: 30,
+            Icons.chat,
+            size: 25,
           ),
           title: Text(
-            "Daily report",
+            "Iaso",
             style: TextStyle(fontSize: 12),
           )),
       BottomNavigationBarItem(
