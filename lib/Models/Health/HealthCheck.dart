@@ -1,4 +1,5 @@
 class HealthCheck {
+  String id;
   double temperature;
   bool musclePain;
   bool headache;
@@ -6,18 +7,21 @@ class HealthCheck {
   DateTime timestamp;
 
   HealthCheck(
-      {this.temperature,
+      {this.id,
+      this.temperature,
       this.musclePain,
       this.headache,
       this.cough,
       this.timestamp});
 
-  HealthCheck.fromJson(Map<String, dynamic> json) {
+  HealthCheck.fromJson(String healthCheckID, Map<String, dynamic> json) {
+    id = healthCheckID;
     temperature = json['temperature'];
     musclePain = json['musclePain'];
     headache = json['headache'];
     cough = json['cough'];
-    //timestamp = DateTime.fromMillisecondsSinceEpoch(json['timestamp'].millisecondsSinceEpoch);
+    timestamp = DateTime.fromMillisecondsSinceEpoch(
+        json['timestamp'].millisecondsSinceEpoch);
   }
 
   Map<String, dynamic> toJson() {

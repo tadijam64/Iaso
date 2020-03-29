@@ -23,16 +23,16 @@ class HealthFirebaseManager {
         .delete();
   }
 
-  Stream<Map<String, HealthCheck>> getAllHealthReportEntries(String userID) {
+  Stream<List<HealthCheck>> getAllHealthReportEntries(String userID) {
     return firestore
         .collection('users')
         .document(userID)
         .collection("health")
         .snapshots()
         .map((queryResult) {
-      return new Map.fromIterable(queryResult.documents.take(100),
-          key: (item) => item.documentID,
-          value: (item) => HealthCheck.fromJson(item.data));
+      return queryResult.documents.map((report) {
+        return HealthCheck.fromJson(report.documentID, report.data);
+      }).toList();
     });
   }
 
@@ -84,9 +84,11 @@ class HealthFirebaseManager {
         healthChecks.map((healthCheck) => healthCheck.temperature).toList();
     var temperatureAverage = getTemperatureAverage(temperatureList);
     TemperatureStatus temperatureStatus;
-    if (temperatureAverage < 37.5 && temperatureAverage >= 36.5) {
+    if (temperatureAverage >= 35.8 && temperatureAverage < 37.0) {
       temperatureStatus = TemperatureStatus.good;
-    } else if (temperatureAverage > 37.5 && temperatureAverage < 39.0) {
+    } else if (temperatureAverage > 37.0 && temperatureAverage < 38.0) {
+      temperatureStatus = TemperatureStatus.ok;
+    } else {
       temperatureStatus = TemperatureStatus.bad;
     }
 

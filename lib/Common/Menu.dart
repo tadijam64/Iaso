@@ -5,20 +5,28 @@ import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/Health.dart';
 import 'package:iaso/Views/Supplies.dart';
 
+import 'Settings.dart';
+
 class Menu {
   void transfer(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Family()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Family()));
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Daily()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Daily()));
         break;
       case 2:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Supplies()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => new Supplies()));
         break;
       case 3:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => new Health()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new Health(userId: Settings().userId)));
         break;
       default:
         break;

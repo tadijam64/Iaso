@@ -2,26 +2,42 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
-import 'package:iaso/Widget/HealthOverviewTile.dart';
+import 'package:iaso/Models/User/GetUserInteractor.dart';
+import 'package:iaso/Widget/TemperatureGraphTile.dart';
+import 'package:iaso/Widget/TemperatureOverviewTile.dart';
 
 class Health extends StatefulWidget {
-  HealthState createState() => new HealthState();
+  final String userId;
+
+  Health({this.userId});
+
+  HealthState createState() => new HealthState(userId: userId);
 }
 
 class HealthState extends State<Health> {
+  final String userId;
+
+  HealthState({this.userId});
+
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    GetUserInteractor().getUserById(userId).then((user) {
+      setState(() {
+        userName = user.name + " - ";
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return pageScafold();
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   //Gradient
   Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
-  //Color gradientStart = Colors.green, gradientEnd = Colors.lightGreen;
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -53,7 +69,7 @@ class HealthState extends State<Health> {
                         width: 10,
                       ),
                       Text(
-                        "Health",
+                        userName + "Health",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -70,7 +86,7 @@ class HealthState extends State<Health> {
                         padding: EdgeInsets.only(top: 10.0),
                         child: Container(
                           width: double.infinity,
-                          child: _content(),
+                          child: _content(userId),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
@@ -84,7 +100,7 @@ class HealthState extends State<Health> {
         });
   }
 
-  _content() {
+  _content(String userID) {
     return SingleChildScrollView(
         child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
@@ -93,14 +109,18 @@ class HealthState extends State<Health> {
           SizedBox(
             height: 20,
           ),
+          Center(child: TemperatureOverviewTile(userID: userID)),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             width: double.infinity,
-            height: 150,
+            height: 400,
             decoration: BoxDecoration(
                 color: Color(0xFFF7F7F7),
                 borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: Center(child: HealthTile()),
-          ),
+            child: Center(child: TemperatureGraphTile(userID: userID)),
+          )
         ],
       ),
     ));
