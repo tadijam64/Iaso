@@ -1,4 +1,5 @@
 import json
+import argparse
 import torch
 from torch.utils.data import DataLoader
 
@@ -33,13 +34,13 @@ def dataset_stats(dataset, batch_size, num_workers=0):
         var += ((images - mean.unsqueeze(1))**2).sum([0,2])
     std = torch.sqrt(var / (len(loader.dataset)*images.shape[-1])) # the last dimension here is x*y of image size
 
-    print(mean, var, std)
     values = {'mean': int(mean.detach().numpy()), 
               'variance': int(var.detach().numpy()), 
               'std_deviation': int(std.detach().numpy()),
               'max_value': max_value,
               'min_value': min_value}
 
+    print(values)
     with open('mean_var_std.json', 'w') as fp:
         json.dump(values, fp)
     return values
