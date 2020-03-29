@@ -26,7 +26,6 @@ class MelSpectrogramDataset(DatasetFolder):
         sample = wav_to_melspectrogram(path, self.duration, self.transform)
         if self.data_range is not None:
             min_value, max_value = self.data_range
-            sample = 
             sample = (sample - min_value) / (max_value - min_value) # normalize to [0,1]
         return sample, target
 
