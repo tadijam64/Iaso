@@ -142,6 +142,7 @@ class SuppliesState extends State<Supplies> {
     return Column(children: <Widget>[
       SizedBox(
         height: 35,
+        width: double.infinity,
       ),
       Expanded(
           child: SingleChildScrollView(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthCheck.dart';
 import 'package:iaso/Views/AddHealthRecord.dart';
@@ -78,29 +79,32 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
           SizedBox(
             height: 20,
           ),
-          GestureDetector(
-              onTap: () => {Get.to(AddHealthRecord())},
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                    color: mat.Color(0xFFD92525),
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.create, color: Colors.white, size: 20),
-                    SizedBox(
-                      width: 10,
+          userID == Settings().userId
+              ? GestureDetector(
+                  onTap: () => {Get.to(AddHealthRecord())},
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: mat.Color(0xFFD92525),
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.create, color: Colors.white, size: 20),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "START NEW CHECK",
+                          style:
+                              mat.TextStyle(color: Colors.white, fontSize: 20),
+                        )
+                      ],
                     ),
-                    Text(
-                      "START NEW CHECK",
-                      style: mat.TextStyle(color: Colors.white, fontSize: 20),
-                    )
-                  ],
-                ),
-              )),
+                  ))
+              : mat.Material(),
           SizedBox(
             height: 20,
           ),

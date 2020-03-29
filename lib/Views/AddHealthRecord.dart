@@ -53,6 +53,16 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               BorderSide.none,
               gradient: LinearGradient(colors: [gradientStart, gradientEnd]),
             ),
+            leading: GestureDetector(
+              child: Container(
+                  margin: EdgeInsets.only(top: 6),
+                  child: Icon(
+                    CupertinoIcons.back,
+                    size: 28,
+                    color: Colors.white,
+                  )),
+              onTap: () => Get.back(),
+            ),
             middle: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -64,7 +74,7 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                   width: 10,
                 ),
                 Text(
-                  "Add new Health record",
+                  "New health record",
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -94,56 +104,60 @@ class AddHealthRecordState extends State<AddHealthRecord> {
   }
 
   _content() {
-    return Container(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(16),
-              width: double.infinity,
-              child: Text("Please enter your symptoms",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-            _temp(),
-            SizedBox(
-              height: 10,
-            ),
-            _cough(),
-            SizedBox(
-              height: 10,
-            ),
-            _headache(),
-            SizedBox(
-              height: 10,
-            ),
-            _ache(),
-            SizedBox(
-              height: 10,
-            ),
-            _soreThroat(),
-            SizedBox(
-              height: 10,
-            ),
-            _shortnessOfBreath(),
-            SizedBox(
-              height: 10,
-            ),
-            _fatigue(),
-            Expanded(child: Material()),
-            Center(
-                child: CupertinoButton(
-              color: CupertinoColors.activeBlue,
-              child: Text(
-                'Add record',
-                style: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                HealthFirebaseManager().addHealthEntry(healthCheck);
-                Get.back();
-              },
-            ))
-          ],
-        ));
+    return SingleChildScrollView(
+        child: Container(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(16),
+                  width: double.infinity,
+                  child: Text("Please enter your symptoms",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+                _temp(),
+                SizedBox(
+                  height: 10,
+                ),
+                _cough(),
+                SizedBox(
+                  height: 10,
+                ),
+                _headache(),
+                SizedBox(
+                  height: 10,
+                ),
+                _ache(),
+                SizedBox(
+                  height: 10,
+                ),
+                _soreThroat(),
+                SizedBox(
+                  height: 10,
+                ),
+                _shortnessOfBreath(),
+                SizedBox(
+                  height: 10,
+                ),
+                _fatigue(),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                    child: CupertinoButton(
+                  color: CupertinoColors.activeBlue,
+                  child: Text(
+                    'Save record',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    HealthFirebaseManager().addHealthEntry(healthCheck);
+                    Get.back();
+                  },
+                ))
+              ],
+            )));
   }
 
   _cough() {
@@ -344,7 +358,9 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 child: Row(children: <Widget>[
                   Icon(
                     Iaso.headache,
-                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    color: healthCheck.shortnessOfBreath
+                        ? Colors.blue
+                        : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -352,7 +368,7 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                   ),
                   Container(
                       padding: const EdgeInsets.all(8),
-                      child: Text(healthCheck.soreThroat
+                      child: Text(healthCheck.shortnessOfBreath
                           ? "Shortness of breath"
                           : "No shortness of breath"))
                 ])),
@@ -406,7 +422,7 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 child: Row(children: <Widget>[
                   Icon(
                     Iaso.headache,
-                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    color: healthCheck.fatigue ? Colors.blue : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -414,8 +430,8 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                   ),
                   Container(
                       padding: const EdgeInsets.all(8),
-                      child: Text(
-                          healthCheck.soreThroat ? "Fatigue" : "No fatigue"))
+                      child:
+                          Text(healthCheck.fatigue ? "Fatigue" : "No fatigue"))
                 ])),
             SizedBox(
               height: 5,
