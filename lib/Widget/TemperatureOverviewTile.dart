@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
+import 'package:iaso/Models/User/GetUserInteractor.dart';
 
 class TemperatureOverviewTile extends StatefulWidget {
   final String userID;
@@ -37,17 +38,21 @@ class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
   @override
   void initState() {
     super.initState();
-    HealthFirebaseManager().getAllHealthReportEntries(userID).listen((value) {
-      setState(() {
-        HealthOverview healthOverview;
-        if (value != null) {
-          healthOverview = healthManager.getHealthOverview(value);
-        } else {
-          healthOverview = healthManager.getHealthOverview(null);
-        }
-        temperatureAverage =
-            healthOverview.temperatureAverage.toStringAsPrecision(4) + " °C";
-        status = healthOverview.temperatureStatus;
+    GetUserInteractor userStream = new GetUserInteractor();
+    userStream.getUserById(userID).then((currentUser) {
+      HealthFirebaseManager().getAllHealthReportEntries(userID).listen((value) {
+        setState(() {
+          HealthOverview healthOverview;
+          if (value != null) {
+            healthOverview =
+                healthManager.getHealthOverview(currentUser, value);
+          } else {
+            healthOverview = healthManager.getHealthOverview(currentUser, null);
+          }
+          temperatureAverage =
+              healthOverview.temperatureAverage.toStringAsPrecision(4) + " °C";
+          status = healthOverview.temperatureStatus;
+        });
       });
     });
   }
