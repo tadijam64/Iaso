@@ -98,9 +98,10 @@ else:
 
 if args.scheduler == 'CosineAnnealing':
     scheduler = CosineAnnealingLR(optimizer=optimizer, T_max=args.max_epochs, eta_min=0)
+elif args.scheduler == 'MultiStep':
+    scheduler = MultiStepLR(optimizer, milestones=args.milestones, gamma=0.2) # TODO: gamma as option
 else:
-    scheduler = MultiStepLR(optimizer, milestones=args.milestones, gamma=0.2)
-
+    scheduler = None
 ######################################################################################################### Restoring
 
 if args.resume:
@@ -173,7 +174,8 @@ def run_epoch(epoch, train=True):
 if __name__ == "__main__":
     with tqdm.tqdm(initial=start_epoch, total=args.max_epochs) as epoch_pbar:
         for epoch in range(start_epoch, args.max_epochs):
-            scheduler.step(epoch=epoch)
+            if scheduler is not None:
+                scheduler.step(epoch=epoch)
 
             train_loss, train_loss_c, train_acc = run_epoch(epoch, train=True)
             val_loss, val_loss_c, val_acc = run_epoch(epoch, train=False)

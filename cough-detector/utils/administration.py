@@ -12,7 +12,7 @@ def parse_args():
     
     parser.add_argument('-root', '--root', type=str, default='../data',
                         help='Which dataset to use')
-                        
+
     parser.add_argument('--data_range', required=True, nargs='+', type=int, 
                         help='Minimum and maximum value of the dataset. Input example: 0 255')
 
@@ -47,7 +47,7 @@ def parse_args():
     # optimization
     parser.add_argument('-l', '--learning_rate', type=float, default=0.1,
                         help='Base learning rate')
-    parser.add_argument('-sched', '--scheduler', type=str, default='MultiStep',
+    parser.add_argument('-sched', '--scheduler', type=str, default='None',
                         help='Scheduler for learning rate annealing: CosineAnnealing | MultiStep')
     parser.add_argument('-mile', '--milestones', type=int, nargs='+', default=[60, 120, 160],
                         help='Multi step scheduler annealing milestones')
