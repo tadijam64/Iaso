@@ -14,14 +14,18 @@ class MelSpectrogramDataset(DatasetFolder):
     extensions - 
     '''
     # TODO: add options for MelSpectrogram()
+    #  TODO: implement data_range
     def __init__(self, root, duration, data_range, transform=None, extensions=('.wav')):
         super(MelSpectrogramDataset, self).__init__(root, transform=transform, extensions=extensions, loader=None)
         self.duration = duration
         self.transform = transform
+        self.data_range = data_range
 
     def __getitem__(self, index):
         path, target = self.samples[index]
         sample = wav_to_melspectrogram(path, self.duration, self.transform)
+        if self.data_range is not None:
+            pass
         return sample, target
 
 

@@ -45,5 +45,12 @@ def dataset_stats(dataset, batch_size, num_workers=0):
     return values
 
 if __name__ == "__main__":
-    dataset = MelSpectrogramDataset('/mnt/4B7D43F071EB179A/output/', 1)
-    print(dataset_stats(dataset, batch_size=1, num_workers=0))
+    parser = argparse.ArgumentParser()
+    # TODO: add help
+    parser.add_argument('--root', type=str, required=True, help='')
+    parser.add_argument('--batch_size', type=int, required=True, help='')
+    parser.add_argument('--num_workers', type=int, default=0, help='')
+    args = parser.parse_args()
+
+    dataset = MelSpectrogramDataset(args.root, 3, data_range=None)
+    print(dataset_stats(dataset, batch_size=args.batch_size, num_workers=args.num_workers))

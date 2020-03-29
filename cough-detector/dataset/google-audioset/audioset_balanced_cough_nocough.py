@@ -10,7 +10,7 @@ def load_csvs_to_df(csvs_folder='./csvs/'):
         if '.csv' not in csv_file:
             continue
         csv_file = os.path.join(csvs_folder, csv_file)
-        list_dfs.append(pd.read_csv(csv_file, delimiter='; ', quoting=3))
+        list_dfs.append(pd.read_csv(csv_file, delimiter='; '))
     df = pd.concat(list_dfs)
     df['positive_labels'] = df['positive_labels'].str.strip('"')
     return df
