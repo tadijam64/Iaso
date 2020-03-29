@@ -5,6 +5,10 @@ class HealthCheck {
   double temperature;
   bool musclePain;
   bool headache;
+  bool shortnessOfBreath;
+  bool soreThroat;
+  bool fatigue;
+  bool chills;
   int cough;
   DateTime timestamp;
 
@@ -13,6 +17,10 @@ class HealthCheck {
       this.temperature,
       this.musclePain,
       this.headache,
+      this.fatigue,
+      this.shortnessOfBreath,
+      this.soreThroat,
+      this.chills,
       this.cough,
       this.timestamp});
 
@@ -21,6 +29,10 @@ class HealthCheck {
     temperature = json['temperature'].toDouble();
     musclePain = json['musclePain'];
     headache = json['headache'];
+    fatigue = json['fatigue'];
+    shortnessOfBreath = json['shortnessOfBreath'];
+    soreThroat = json['soreThroat'];
+    chills = json['chills'];
     cough = json['cough'];
     timestamp = DateTime.fromMillisecondsSinceEpoch(
         json['timestamp'].millisecondsSinceEpoch);
@@ -31,6 +43,10 @@ class HealthCheck {
     data['temperature'] = this.temperature;
     data['musclePain'] = this.musclePain;
     data['headache'] = this.headache;
+    data['fatigue'] = this.fatigue;
+    data['shortnessOfBreath'] = this.shortnessOfBreath;
+    data['soreThroat'] = this.soreThroat;
+    data['chills'] = this.chills;
     data['cough'] = this.cough;
     data['timestamp'] = Timestamp.fromDate(this.timestamp);
     return data;

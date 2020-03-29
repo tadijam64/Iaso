@@ -242,12 +242,12 @@ class FamilyState extends State<Family> {
   void _prepareUserData(
       HealthOverview ho, List<Supply> sup, String phoneNumber) {
     GetUserInteractor userStream = new GetUserInteractor();
-    userStream.getUserByPhoneNumber(phoneNumber).then((val) {
+    userStream.getUserByPhoneNumber(phoneNumber).then((currentUser) {
       HealthFirebaseManager()
-          .getAllHealthReportEntries(val.id)
+          .getAllHealthReportEntries(currentUser.id)
           .listen((onHealthList) {
         HealthOverview hoTemp =
-            HealthFirebaseManager().getHealthOverview(onHealthList);
+            HealthFirebaseManager().getHealthOverview(currentUser, onHealthList);
         setState(() {
           ho.overallBodyHealth = hoTemp.overallBodyHealth;
           ho.temperatureAverage = hoTemp.temperatureAverage;
@@ -255,7 +255,7 @@ class FamilyState extends State<Family> {
         });
       });
       SuppliesFirebaseManager supI = new SuppliesFirebaseManager();
-      supI.getBuyList(val.id).map((contacts) async {
+      supI.getBuyList(currentUser.id).map((contacts) async {
         List<Supply> family = new List();
 
         for (var value in contacts) {

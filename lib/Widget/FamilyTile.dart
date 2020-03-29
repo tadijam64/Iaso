@@ -45,13 +45,22 @@ class FamilyTileStatus extends State<FamilyTile> {
 
   List<Color> _getStatusColors() {
     switch (overview.overallBodyHealth) {
+      case OverallBodyHealth.excellent:
+        return [Color(0xFF5fa68c), Color(0xFF489a7c)];
+        break;
+      case OverallBodyHealth.veryGood:
+        return [Color(0xFF187452), Color(0xFF156749)];
+        break;
       case OverallBodyHealth.good:
-        return [Color(0xFF05A66B), Color(0xFF02734A)];
+        return [Color(0xFF1b815c), Color(0xFF02734a)];
         break;
       case OverallBodyHealth.ok:
-        return [Color(0xFFF2CB05), Color(0xFFF2B705)];
+        return [Color(0xFF05A66B), Color(0xFF02734A)];
         break;
       case OverallBodyHealth.bad:
+        return [Color(0xFFF2CB05), Color(0xFFF2B705)];
+        break;
+      case OverallBodyHealth.veryBad:
         return [Color(0xFFD92525), Color(0xFF8C0808)];
         break;
     }
