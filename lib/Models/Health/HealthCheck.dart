@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HealthCheck {
   String id;
   double temperature;
@@ -16,7 +18,7 @@ class HealthCheck {
 
   HealthCheck.fromJson(String healthCheckID, Map<String, dynamic> json) {
     id = healthCheckID;
-    temperature = json['temperature'];
+    temperature = json['temperature'].toDouble();
     musclePain = json['musclePain'];
     headache = json['headache'];
     cough = json['cough'];
@@ -30,7 +32,7 @@ class HealthCheck {
     data['musclePain'] = this.musclePain;
     data['headache'] = this.headache;
     data['cough'] = this.cough;
-    data['timestamp'] = this.timestamp.millisecondsSinceEpoch;
+    data['timestamp'] = Timestamp.fromDate(this.timestamp);
     return data;
   }
 }
