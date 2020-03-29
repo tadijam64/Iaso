@@ -14,8 +14,7 @@ Future<void> main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
 
-  notificationAppLaunchDetails = await reminderManager
-      .notificationsPlugin
+  notificationAppLaunchDetails = await reminderManager.notificationsPlugin
       .getNotificationAppLaunchDetails();
 
   var initializationSettingsAndroid =
@@ -40,6 +39,7 @@ Future<void> main() async {
     }
     selectNotificationSubject.add(payload);
   });
+
   runApp(
     MyApp(),
   );

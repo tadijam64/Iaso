@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iaso/Common/Settings.dart';
-import 'package:iaso/Models/Reminders/ReminderManager.dart';
 
 import '../main.dart';
 
@@ -31,8 +30,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   void dispose() {
-    didReceiveLocalNotificationSubject.close();
-    selectNotificationSubject.close();
     super.dispose();
   }
 

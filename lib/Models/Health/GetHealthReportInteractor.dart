@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
+import 'package:iaso/Models/Reminders/ReminderManager.dart';
 import 'package:iaso/Models/User/User.dart';
 
 import 'HealthCheck.dart';
@@ -11,6 +12,15 @@ class HealthFirebaseManager {
   var firestore = Firestore.instance;
 
   void addHealthEntry(HealthCheck healthCheck) async {
+    if (healthCheck.temperature > 37.5) {
+      ReminderManager().showNotification("Health status",
+          "Uh oh, your temperature is up, I will remind you to measure it again in 2 hours");
+      ReminderManager().scheduleNotification(
+          "Health status",
+          "2 hours ago your temperature was up, its time to measure it again!",
+          DateTime.now().add(Duration(hours: 2)),
+          Deeplink.health);
+    }
     return await firestore
         .collection('users/${Settings().userId}/health')
         .add(healthCheck.toJson())
