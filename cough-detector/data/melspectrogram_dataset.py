@@ -29,9 +29,10 @@ def wav_to_melspectrogram(wav_path, duration=1, transform=None):
     waveform, sample_rate = torchaudio.load(wav_path, normalization=True)
     
     # TODO: add resampling and target sample rate as option
-    target_sample_rate = 16000 
-    waveform = Resample(sample_rate, target_sample_rate)(waveform)
-    sample_rate = target_sample_rate
+    target_sample_rate = 16000
+    if sample_rate != target_sample_rate:
+        waveform = Resample(sample_rate, target_sample_rate)(waveform)
+        sample_rate = target_sample_rate
 
     if transform is not None:
         # TODO: haven't tried any transform yet
