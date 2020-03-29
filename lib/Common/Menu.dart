@@ -5,6 +5,8 @@ import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/Health.dart';
 import 'package:iaso/Views/Supplies.dart';
 
+import 'Settings.dart';
+
 class Menu {
   void transfer(BuildContext context, int index) {
     switch (index) {
@@ -22,7 +24,11 @@ class Menu {
         break;
       case 3:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => new Health()));
+
+            context,
+            MaterialPageRoute(
+                builder: (context) => new Health(userId: Settings().userId)));
+
         break;
       default:
         break;

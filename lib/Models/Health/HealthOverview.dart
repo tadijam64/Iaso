@@ -1,4 +1,4 @@
-enum TemperatureStatus { bad, good }
+enum TemperatureStatus { bad, ok, good }
 
 enum OverallBodyHealth { bad, ok, good }
 
@@ -7,5 +7,8 @@ class HealthOverview {
   TemperatureStatus temperatureStatus;
   OverallBodyHealth overallBodyHealth;
 
-  HealthOverview({this.temperatureAverage, this.temperatureStatus, this.overallBodyHealth});
+  HealthOverview(
+      {this.temperatureAverage,
+      this.temperatureStatus,
+      this.overallBodyHealth});
 }

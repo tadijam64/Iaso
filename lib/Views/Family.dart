@@ -7,7 +7,6 @@ import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/Contacts/ContactInteractor.dart';
 import 'package:iaso/Models/Contacts/FirebaseContact.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
-import 'package:iaso/Models/Health/HealthCheck.dart';
 import 'package:iaso/Models/Health/HealthOverview.dart';
 import 'package:iaso/Models/Supplies/SuppliesFirebaseManager.dart';
 import 'package:iaso/Models/Supplies/Supply.dart';
@@ -73,6 +72,7 @@ class FamilyState extends State<Family> {
 
   //Gradient
   Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+
   //Color gradientStart = Colors.purple, gradientEnd = Colors.deepPurple;
 
   Widget pageScafold() {
@@ -175,6 +175,7 @@ class FamilyState extends State<Family> {
               FamilyTile(
                   overview: ho,
                   status: FamilyStatus.ok,
+                  id: f.id,
                   name: f.name,
                   avatar: f.avatar,
                   supply: sup,
@@ -188,6 +189,7 @@ class FamilyState extends State<Family> {
 
   List<Widget> requestTile = new List();
   bool otvoriRequestove = false;
+
   _dohvatiListuRequestova() {
     requestTile = new List();
     requestTile.add(SizedBox(
@@ -239,27 +241,17 @@ class FamilyState extends State<Family> {
 
   void _prepareUserData(
       HealthOverview ho, List<Supply> sup, String phoneNumber) {
-    GetUserInteractor userI = new GetUserInteractor();
-    userI.getUserByPhoneNumber(phoneNumber).then((val) {
+    GetUserInteractor userStream = new GetUserInteractor();
+    userStream.getUserByPhoneNumber(phoneNumber).then((val) {
       HealthFirebaseManager()
           .getAllHealthReportEntries(val.id)
-          .map((contacts) async {
-        List<HealthCheck> family = new List();
-
-        for (var value in contacts.values) {
-          family.add(value);
-        }
-        return family;
-      }).listen((onData) {
-        onData.then((onFamilyList) {
-          HealthOverview hoTemp =
-              HealthFirebaseManager().getHealthOverview(onFamilyList);
-
-          setState(() {
-            ho.overallBodyHealth = hoTemp.overallBodyHealth;
-            ho.temperatureAverage = hoTemp.temperatureAverage;
-            ho.temperatureStatus = hoTemp.temperatureStatus;
-          });
+          .listen((onHealthList) {
+        HealthOverview hoTemp =
+            HealthFirebaseManager().getHealthOverview(onHealthList);
+        setState(() {
+          ho.overallBodyHealth = hoTemp.overallBodyHealth;
+          ho.temperatureAverage = hoTemp.temperatureAverage;
+          ho.temperatureStatus = hoTemp.temperatureStatus;
         });
       });
       SuppliesFirebaseManager supI = new SuppliesFirebaseManager();

@@ -1,78 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iaso/Common/Settings.dart';
-import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
-import 'package:iaso/Models/Health/HealthOverview.dart';
+import 'package:iaso/Icons/iaso_icons.dart';
+import 'package:iaso/Models/Health/HealthCheck.dart';
+import 'package:intl/intl.dart';
 
-class HealthTile extends StatefulWidget {
-  HealthTileState createState() => new HealthTileState();
-}
+class HealthOverviewTile extends StatelessWidget {
+  final HealthCheck healthCheck;
 
-class HealthTileState extends State<HealthTile> {
-  OverallBodyHealth status = OverallBodyHealth.good;
-  String temperatureAverage = "";
-  HealthFirebaseManager healthManager = HealthFirebaseManager();
-
-  List<Color> _getStatusColors() {
-    switch (status) {
-      case OverallBodyHealth.good:
-        return [Color(0xFF05A66B), Color(0xFF02734A)];
-      case OverallBodyHealth.ok:
-        return [Color(0xFFF2CB05), Color(0xFFF2B705)];
-      case OverallBodyHealth.bad:
-        return [Color(0xFFD92525), Color(0xFF8C0808)];
-      default:
-        return [Color(0xFFFFF6B), Color(0xFF0F0FF)];
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    HealthFirebaseManager().getAllHealthReportEntries(Settings().userId).listen((value) {
-      setState(() {
-        HealthOverview healthOverview;
-        if (value != null) {
-          healthOverview = healthManager.getHealthOverview(value.values.toList());
-        } else {
-          healthOverview = healthManager.getHealthOverview(null);
-        }
-        temperatureAverage = healthOverview.temperatureAverage.toString() + " °C";
-        status = healthOverview.overallBodyHealth;
-      });
-    });
-  }
+  HealthOverviewTile({this.healthCheck});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity,
-        height: 150,
-        decoration: BoxDecoration(color: Color(0xFFF7F7F7), borderRadius: BorderRadius.all(Radius.circular(5))),
-        child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Stack(
-                  alignment: AlignmentDirectional.center,
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: <Widget>[
+            Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
                   children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 150,
-                      decoration:
-                          BoxDecoration(gradient: LinearGradient(colors: _getStatusColors()), borderRadius: BorderRadius.all(Radius.circular(30))),
-                      child: Center(
-                          child: Text(
-                        "Your average temperature: " + temperatureAverage,
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )),
+                    Icon(
+                      Iaso.headache,
+                      color: healthCheck.headache ? Colors.blue : Colors.grey,
+                      size: 32,
                     ),
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text("Headache"))
                   ],
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-              ],
-            )));
+                )),
+            Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Iaso.cough,
+                      color: healthCheck.cough != 0 ? Colors.blue : Colors.grey,
+                      size: 32,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(_getCoughType(healthCheck.cough)))
+                  ],
+                )),
+            Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Iaso.fever,
+                      size: 32,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text("Temperature: " +
+                            healthCheck.temperature.toString()))
+                  ],
+                )),
+            Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Iaso.pain__1_,
+                      color: healthCheck.musclePain ? Colors.blue : Colors.grey,
+                      size: 32,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text("MusclePain"))
+                  ],
+                )),
+            Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.access_time,
+                      color: Colors.blue,
+                      size: 32,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(DateFormat('yyyy-MM-dd – kk:mm')
+                            .format(healthCheck.timestamp)))
+                  ],
+                ))
+          ],
+        ));
+  }
+
+  String _getCoughType(int cough) {
+    switch (cough) {
+      case 1:
+        return "Dry cough";
+      case 2:
+        return "Productive cough";
+      default:
+        return "No cough";
+    }
   }
 }
