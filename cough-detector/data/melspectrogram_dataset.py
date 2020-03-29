@@ -25,7 +25,9 @@ class MelSpectrogramDataset(DatasetFolder):
         path, target = self.samples[index]
         sample = wav_to_melspectrogram(path, self.duration, self.transform)
         if self.data_range is not None:
-            pass
+            min_value, max_value = self.data_range
+            sample = 
+            sample = (sample - min_value) / (max_value - min_value) # normalize to [0,1]
         return sample, target
 
 
@@ -63,7 +65,9 @@ def wav_to_melspectrogram(wav_path, duration=1, transform=None):
     end_idx   = start_idx + excerpt_length
     excerpt_waveform = waveform[:, start_idx:end_idx]
     
-    return MelSpectrogram(sample_rate=sample_rate, n_mels=64)(excerpt_waveform)
+    melspec = MelSpectrogram(sample_rate=sample_rate, n_mels=64)(excerpt_waveform)
+    melspec = (1e-6 + melspec).log2()
+    return melspec
 
 
 if __name__ == "__main__":
