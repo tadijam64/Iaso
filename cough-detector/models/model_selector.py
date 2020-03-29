@@ -5,9 +5,7 @@ class ModelSelector():
     """
     Selector class, so that you can call upon multiple models
     """
-    def __init__(self,
-                 num_classes,
-                 ):
+    def __init__(self, num_classes):
         self.num_classes = num_classes
 
     def select(self, model, args):
@@ -20,7 +18,7 @@ class ModelSelector():
             assert args.resdepth in [18, 34, 50, 101, 152], \
                 "Non-standard and unsupported resnet depth ({})".format(args.resdepth)
             if args.resdepth == 18:
-            #     net = ResNet18(self.num_classes)
+                net = ResNet18(self.num_classes)
             # elif args.resdepth == 34:
             #     net = ResNet34(self.num_classes)
             # elif args.resdepth == 50:
@@ -29,7 +27,6 @@ class ModelSelector():
             #     net = ResNet101(self.num_classes)
             # else:
             #     net = ResNet152()
-
         else:
             raise NotImplementedError('Model {} not supported'.format(model))
         return net

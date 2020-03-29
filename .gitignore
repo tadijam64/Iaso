@@ -2,3 +2,9 @@
 *.pyc
 
 cough-detector/train\.ipynb
+
+cough-detector/\.ipynb_checkpoints/
+
+cough-detector/log/tester/saved_models/
+
+cough-detector/log/tester/summary_logs/

@@ -1,4 +1,5 @@
-from torchvision import resnet18
+from torch import nn
+from torchvision.models import resnet18
 
 def ResNet18(num_classes):
     model = resnet18()

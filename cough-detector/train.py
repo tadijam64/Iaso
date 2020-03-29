@@ -19,26 +19,28 @@ args = parse_args()
 ######################################################################################################### Seeding
 # Seeding can be annoying in pytorch at the moment. Based on my experience, the below means of seeding
 # allows for deterministic experimentation.
-torch.manual_seed(args.seed)
-np.random.seed(args.seed)  # set seed
-random.seed(args.seed)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 args.device = device
-if device == 'cuda':
-    torch.cuda.manual_seed_all(args.seed)
-    torch.backends.cudnn.deterministic = True
+
+if args.seed != -1:
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)  # set seed
+    random.seed(args.seed)
+    if device == 'cuda':
+        torch.cuda.manual_seed_all(args.seed)
+        torch.backends.cudnn.deterministic = True
 
 ######################################################################################################### Data
-trainloader, testloader, in_shape = load_dataset(args)
+trainloader, valloader = load_dataset(args)
 
 n_train_batches = len(trainloader)
 n_train_images = len(trainloader.dataset)
-n_test_batches = len(testloader)
-n_test_images = len(testloader.dataset)
+n_val_batches = len(valloader)
+n_val_images = len(valloader.dataset)
 
 print("Data loaded successfully ")
 print("Training --> {} images and {} batches".format(n_train_images, n_train_batches))
-print("Testing --> {} images and {} batches".format(n_test_images, n_test_batches))
+print("Validating --> {} images and {} batches".format(n_val_images, n_val_batches))
 
 ######################################################################################################### Admin
 
@@ -58,19 +60,19 @@ with tarfile.open(snapshot_filename, "w:gz") as tar:
 
 start_epoch, latest_loadpath = get_start_epoch(args)
 args.latest_loadpath = latest_loadpath
-best_epoch, best_test_acc = get_best_epoch(args)
+best_epoch, best_val_acc = get_best_epoch(args)
 if best_epoch >= 0:
-    print('Best evaluation acc so far at {} epochs: {:0.2f}'.format(best_epoch, best_test_acc))
+    print('Best evaluation acc so far at {} epochs: {:0.2f}'.format(best_epoch, best_val_acc))
 
 if not args.resume:
     save_statistics(logs_filepath, "result_summary_statistics",
                     ["epoch",
                      "train_loss",
-                     "test_loss",
+                     "val_loss",
                      "train_loss_c",
-                     "test_loss_c",
+                     "val_loss_c",
                      "train_acc",
-                     "test_acc",
+                     "val_acc",
                      ],
                     create=True)
 
@@ -114,7 +116,7 @@ def get_losses(inputs, targets):
     :param targets: Input targets, y
     :return: Losses, logits, and targets (in case of a change of targets)
     """
-    logits = net(inputs)
+    logits = net(inputs).view(-1)
     loss = criterion(logits, targets)
     return (loss, ), logits, targets
 
@@ -128,11 +130,11 @@ def run_epoch(epoch, train=True):
     total_loss_c = 0
     correct = 0
     total = 0
-    batches = n_train_batches if train else n_test_batches
-    identifier = 'train' if train else 'test'
+    batches = n_train_batches if train else n_val_batches
+    identifier = 'train' if train else 'val'
     with tqdm.tqdm(initial=0, total=batches) as pbar:
-        for batch_idx, (inputs, targets) in enumerate(trainloader if train else testloader):
-            inputs, targets = inputs.to(device), targets.to(device)
+        for batch_idx, (inputs, targets) in enumerate(trainloader if train else valloader):
+            inputs, targets = inputs.float().to(device), targets.float().to(device)
 
             losses, logits, targets = get_losses(inputs, targets)
 
@@ -146,7 +148,10 @@ def run_epoch(epoch, train=True):
 
             total_loss += loss.item()
             total_loss_c += loss_c.item()
-            _, predicted = logits.max(1)
+            if num_classes > 1:
+                _, predicted = logits.max(1)
+            else: 
+                predicted = torch.sigmoid(logits).round()
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
 
@@ -171,25 +176,25 @@ if __name__ == "__main__":
             scheduler.step(epoch=epoch)
 
             train_loss, train_loss_c, train_acc = run_epoch(epoch, train=True)
-            test_loss, test_loss_c, test_acc = run_epoch(epoch, train=False)
+            val_loss, val_loss_c, val_acc = run_epoch(epoch, train=False)
 
             save_statistics(logs_filepath, "result_summary_statistics",
                             [epoch,
                              train_loss,
-                             test_loss,
+                             val_loss,
                              train_loss_c,
-                             test_loss_c,
+                             val_loss_c,
                              train_acc,
-                             test_acc])
+                             val_acc])
 
             ############################################################################################################
             if args.save:
                 # Saving models
                 is_best = False
                 previous_best_epoch = -1
-                if best_test_acc <= test_acc:
+                if best_val_acc <= val_acc:
                     previous_best_epoch = best_epoch
-                    best_test_acc = test_acc
+                    best_val_acc = val_acc
                     best_epoch = epoch
                     is_best = True
                 state = {
