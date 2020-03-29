@@ -8,3 +8,7 @@ cough-detector/\.ipynb_checkpoints/
 cough-detector/log/tester/saved_models/
 
 cough-detector/log/tester/summary_logs/
+
+cough-detector/dataset/mean_var_std\.json
+
+cough-detector/Untitled\.ipynb

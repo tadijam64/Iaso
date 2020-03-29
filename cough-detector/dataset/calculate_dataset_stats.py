@@ -17,31 +17,34 @@ def dataset_stats(dataset, batch_size, num_workers=0):
     min_value =  10000
     mean = 0.0
     for images, _ in loader:
-        if images.max() > max_value:
-            max_value = images.max()
-        if images.min() < min_value:
-            min_value = images.min()
+        if images.max().item() > max_value:
+            max_value = images.max().item()
+        if images.min().item() < min_value:
+            min_value = images.min().item()
 
-        batch_samples = images.size(0)
-        images = images.view(batch_samples, images.size(1), -1)
-        mean += images.mean(2).sum(0)
-    mean = mean / len(loader.dataset)
+    #     batch_samples = images.size(0)
+    #     images = images.view(batch_samples, images.size(1), -1)
+    #     mean += images.mean(2).sum(0)
+    # mean = mean / len(loader.dataset)
 
-    var = 0.0
-    for images, _ in loader:
-        batch_samples = images.size(0)
-        images = images.view(batch_samples, images.size(1), -1)
-        var += ((images - mean.unsqueeze(1))**2).sum([0,2])
-    std = torch.sqrt(var / (len(loader.dataset)*images.shape[-1])) # the last dimension here is x*y of image size
+    # var = 0.0
+    # for images, _ in loader:
+    #     batch_samples = images.size(0)
+    #     images = images.view(batch_samples, images.size(1), -1)
+    #     var += ((images - mean.unsqueeze(1))**2).sum([0,2])
+    # std = torch.sqrt(var / (len(loader.dataset)*images.shape[-1])) # the last dimension here is x*y of image size
 
-    values = {'mean': int(mean.detach().numpy()), 
-              'variance': int(var.detach().numpy()), 
-              'std_deviation': int(std.detach().numpy()),
-              'max_value': max_value,
+    # values = {'mean': int(mean.detach().numpy()), 
+    #           'variance': int(var.detach().numpy()), 
+    #           'std_deviation': int(std.detach().numpy()),
+    #           'max_value': max_value,
+    #           'min_value': min_value}
+
+    values = {'max_value': max_value,
               'min_value': min_value}
 
     print(values)
-    with open('mean_var_std.json', 'w') as fp:
+    with open('stats.json', 'w') as fp:
         json.dump(values, fp)
     return values
 

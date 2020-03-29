@@ -12,7 +12,10 @@ def parse_args():
     
     parser.add_argument('-root', '--root', type=str, default='../data',
                         help='Which dataset to use')
-    
+                        
+    parser.add_argument('--data_range', required=True, nargs='+', type=int, 
+                        help='Minimum and maximum value of the dataset. Input example: 0 255')
+
     parser.add_argument('-batch', '--batch_size', type=int, default=128,
                         help='Batch Size')
     
