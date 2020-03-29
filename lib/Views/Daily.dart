@@ -41,6 +41,7 @@ class DailyState extends State<Daily> {
   //Color gradientStart = Colors.blue, gradientEnd = Color(0xFF135a91);
 
   List<Widget> messageBox = new List();
+  List<String> responses = new List();
 
   Widget pageScafold() {
     return CupertinoTabScaffold(
@@ -64,17 +65,30 @@ class DailyState extends State<Daily> {
                     middle: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(
+                        Container(
+                            margin: EdgeInsets.only(top: 10),
+                            height: 38,
+                            width: 38,
+                            child: CircleAvatar(
+                                radius: 19,
+                                backgroundImage:
+                                    AssetImage('assets/isao.png'))),
+
+                        /*Icon(
                           Icons.chat,
                           color: Colors.white,
-                        ),
+                        ),*/
+
                         SizedBox(
                           width: 10,
                         ),
-                        Text(
-                          "Iaso",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Text(
+                            "Iaso",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -118,6 +132,34 @@ class DailyState extends State<Daily> {
             ),
           ),
         )),
+        responses.length > 0
+            ? Container(
+                height: 40.0,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(left: 15),
+                    itemCount: responses.length,
+                    itemBuilder: (BuildContext contex, int index) {
+                      return GestureDetector(
+                          onTap: () => _sendMessage(responses[index]),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(right: 5),
+                            decoration: BoxDecoration(
+                                color: gradientStart,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3))),
+                            child: Padding(
+                              child: Text(
+                                responses[index],
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                              ),
+                              padding: EdgeInsets.all(7),
+                            ),
+                          ));
+                    }))
+            : Material(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: Row(
@@ -135,7 +177,7 @@ class DailyState extends State<Daily> {
                 width: 20,
               ),
               GestureDetector(
-                  onTap: () => _sendMessage(),
+                  onTap: () => _sendMessage(controller.text),
                   child: Icon(
                     Icons.send,
                     size: 35,
@@ -154,9 +196,14 @@ class DailyState extends State<Daily> {
                     );*/
   }
 
-  _sendMessage() {
-    String message = controller.text;
+  Widget iasoTyping = null;
+  _sendMessage(String message) {
+    if (iasoTyping != null) {
+      messageBox.remove(iasoTyping);
+    }
+
     controller.text = "";
+    responses = new List();
     FocusScope.of(context).unfocus();
 
     setState(() {
@@ -174,10 +221,10 @@ class DailyState extends State<Daily> {
       );
     });
 
-    Widget typing = Typing();
+    iasoTyping = Typing();
     setState(() {
       messageBox.add(
-        typing,
+        iasoTyping,
       );
     });
 
@@ -188,9 +235,14 @@ class DailyState extends State<Daily> {
         .getReport(new ReportQuery(question: message))
         .then((response) {
       setState(() {
-        messageBox.removeLast();
+        messageBox.remove(iasoTyping);
+        iasoTyping = null;
 
         response.answers.forEach((f) {
+          f.context.prompts.forEach((l) {
+            responses.add(l.displayText);
+          });
+
           messageBox.add(
             ChatBubble(
               right: false,
@@ -204,8 +256,10 @@ class DailyState extends State<Daily> {
           );
         });
 
-        scrollController.animateTo(scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 500), curve: Curves.ease);
+        scrollController.animateTo(
+            scrollController.position.maxScrollExtent + 50,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.ease);
       });
     });
   }

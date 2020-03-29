@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iaso/Views/Contacts.dart';
-import 'package:iaso/Views/Family.dart';
+import 'package:iaso/Views/Daily.dart';
 import 'package:iaso/Views/LoginPhoneNumber.dart';
 import 'package:iaso/Views/Pool.dart';
 import 'package:iaso/Views/Supplies.dart';
@@ -51,7 +51,7 @@ class Settings {
           if (hasUserAddedContacts == null || !hasUserAddedContacts) {
             Get.off(Contacts());
           } else {
-            Get.off(Family());
+            Get.off(Daily());
           }
         }
       });

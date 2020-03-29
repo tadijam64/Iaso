@@ -80,7 +80,7 @@ class HealthState extends State<Health> {
                   trailing: GestureDetector(
                       onTap: () => {Get.to(AddHealthRecord())},
                       child: Icon(
-                        CupertinoIcons.create_solid,
+                        Icons.create,
                         color: Colors.white,
                       )),
                 ),
@@ -112,7 +112,7 @@ class HealthState extends State<Health> {
   _content(String userID) {
     return SingleChildScrollView(
         child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 18),
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -124,7 +124,6 @@ class HealthState extends State<Health> {
           ),
           Container(
             width: double.infinity,
-            height: 400,
             decoration: BoxDecoration(
                 color: Color(0xFFF7F7F7),
                 borderRadius: BorderRadius.all(Radius.circular(5))),

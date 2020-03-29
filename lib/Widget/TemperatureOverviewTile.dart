@@ -56,7 +56,7 @@ class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 90,
+        height: 60,
         decoration: BoxDecoration(
             color: Color(0xFFF7F7F7),
             borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -73,10 +73,10 @@ class TemperatureOverviewTileState extends State<TemperatureOverviewTile> {
                       height: 150,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(colors: _getStatusColors()),
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
                       child: Center(
                           child: Text(
-                        "Average temperature: " + temperatureAverage,
+                        "Your score: " + temperatureAverage,
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       )),
                     ),

@@ -12,6 +12,9 @@ class HealthOverviewTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.all(Radius.circular(5))),
         padding: const EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
