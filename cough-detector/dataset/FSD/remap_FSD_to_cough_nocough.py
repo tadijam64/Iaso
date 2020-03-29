@@ -1,5 +1,6 @@
 import os
 import shutil
+import argparse
 import numpy as np
 import pandas as pd
 
@@ -29,3 +30,14 @@ def remap_to_cough_nocough(csv_file, wav_root, output_root):
         dest_path   = os.path.join(output_root, df.label[i], df.fname[i])
         
         shutil.move(source_path, dest_path)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    # TODO: add help
+    parser.add_argument('--csv_file', type=str, required=True, help='')
+    parser.add_argument('--wav_root', type=str, required=True, help='')
+    parser.add_argument('--output_root', type=str, required=True, help='')
+
+    args = parser.parse_args()
+    remap_to_cough_nocough(args.csv_file, args.wav_root, args.output_root)
