@@ -8,26 +8,35 @@ import 'package:iaso/Widget/Chat.dart';
 import 'package:iaso/Widget/Typing.dart';
 
 class Daily extends StatefulWidget {
+  List<Widget> iasoDefault;
+  List<String> responesDefault;
+  Daily({this.iasoDefault, this.responesDefault});
   DailyState createState() => new DailyState();
 }
 
 class DailyState extends State<Daily> {
   @override
-  Widget build(BuildContext context) {
-    /* GetDailyReportInteractor()
-        .getReport(new ReportQuery(question: "What is the report for today?"))
-        .then((response) {
-      print(response.toJson().toString());
-      // you can have multiple answers in a list
-      // prompts to display for a user are found in Context prompts Display text
-      // these display text are also what you will show to the user, and send as a new query if user clicks it
-      GetDailyReportInteractor()
-          .getReport(new ReportQuery(
-              question: response.answers[0].context.prompts[0].displayText))
-          .then((response) {
-        print(response.toJson().toString());
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => afterBuild(context));
+  }
+
+  afterBuild(BuildContext context) {
+    if (widget.iasoDefault != null) {
+      setState(() {
+        messageBox.addAll(widget.iasoDefault);
       });
-    });*/
+    }
+
+    if (widget.responesDefault != null) {
+      setState(() {
+        responses.addAll(widget.responesDefault);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return pageScafold();
   }
 
@@ -74,9 +83,9 @@ class DailyState extends State<Daily> {
                                     AssetImage('assets/isao.png'))),
 
                         /*Icon(
-                          Icons.chat,
-                          color: Colors.white,
-                        ),*/
+                              Icons.chat,
+                              color: Colors.white,
+                            ),*/
 
                         SizedBox(
                           width: 10,
@@ -189,10 +198,10 @@ class DailyState extends State<Daily> {
     );
 
     /*return WebView(
-                      initialUrl:
-                          'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
-                      javascriptMode: JavascriptMode.unrestricted,
-                    );*/
+                          initialUrl:
+                              'https://webchat.botframework.com/embed/dailyreporter?s=crAQ6gvsVJo.j7Jg74ZdJcEirRJpAxAgg6hQBLupuqUTMH4ceyOHOu8',
+                          javascriptMode: JavascriptMode.unrestricted,
+                        );*/
   }
 
   Widget iasoTyping = null;

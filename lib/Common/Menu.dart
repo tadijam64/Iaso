@@ -4,6 +4,7 @@ import 'package:iaso/Views/Daily.dart';
 import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/Health.dart';
 import 'package:iaso/Views/Supplies.dart';
+import 'package:iaso/Widget/Chat.dart';
 
 import 'Settings.dart';
 
@@ -16,7 +17,24 @@ class Menu {
         break;
       case 1:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => new Daily()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => new Daily(
+                      iasoDefault: <Widget>[
+                        ChatBubble(
+                          text:
+                              "Hey! I'm Isao, Greek goodess of recuperation from illness. \n\nI'm here to help you with your Covid-19 questions!",
+                          right: false,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                      responesDefault: <String>[
+                        "Hey! How are you?",
+                        "Today's report?"
+                      ],
+                    )));
         break;
       case 2:
         Navigator.push(
