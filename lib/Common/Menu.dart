@@ -9,6 +9,7 @@ import 'package:iaso/Widget/Chat.dart';
 import 'Settings.dart';
 
 class Menu {
+  Color gradientStart = Color(0xFFD92525);
   void transfer(BuildContext context, int index) {
     switch (index) {
       case 0:
@@ -61,7 +62,9 @@ class Menu {
           ),
           title: Text(
             "Family",
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+              fontSize: 12,
+            ),
           )),
       BottomNavigationBarItem(
           icon: Icon(
@@ -75,11 +78,12 @@ class Menu {
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.shopping_cart,
+            color: gradientStart,
             size: 30,
           ),
           title: Text(
             "Supplies",
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 12, color: gradientStart),
           )),
       BottomNavigationBarItem(
           icon: Icon(

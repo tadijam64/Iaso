@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iaso/Views/Contacts.dart';
 import 'package:iaso/Views/Daily.dart';
+import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/LoginPhoneNumber.dart';
 import 'package:iaso/Views/Pool.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,7 @@ class Settings {
           if (hasUserAddedContacts == null || !hasUserAddedContacts) {
             Get.off(Contacts());
           } else {
-            Get.off(Daily());
+            Get.off(Family());
           }
         }
       });

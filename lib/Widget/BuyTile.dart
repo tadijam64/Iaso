@@ -32,7 +32,7 @@ class BuyTileState extends State<BuyTile> {
             },
         child: Container(
             width: double.infinity,
-            height: 70,
+            height: 50,
             decoration: BoxDecoration(
                 color: Color(0xFFF7F7F7),
                 borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -49,8 +49,8 @@ class BuyTileState extends State<BuyTile> {
                           suply.name,
                           style: TextStyle(
                               fontSize: 20,
-                              color: Colors.grey[900],
-                              fontWeight: FontWeight.bold),
+                              color: Colors.grey[800],
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),

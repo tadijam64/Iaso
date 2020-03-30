@@ -95,7 +95,7 @@ class SuppliesState extends State<Supplies> {
                                                             ? Colors.grey[100]
                                                             : Colors.grey[400],
                                                     fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight: FontWeight.w600,
                                                     letterSpacing: 1.5),
                                               )));
                                     }),

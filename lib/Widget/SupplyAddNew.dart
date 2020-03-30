@@ -150,7 +150,7 @@ class SupplyAddNewState extends State<SupplyAddNew> {
                 child: CupertinoButton(
               child: Text(
                 'SAVE DATA',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 24, color: gradientStart),
               ),
               onPressed: () => _saveData(),
             ))
