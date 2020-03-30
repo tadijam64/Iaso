@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Views/Daily.dart';
+import 'package:iaso/Views/Family.dart';
 import 'package:iaso/Views/Health.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -115,7 +116,7 @@ class ReminderManager {
   void configureSelectNotificationSubject(BuildContext context) {
     selectNotificationSubject.stream.listen((String payload) async {
       if (payload == Deeplink.iaso.toString()) {
-        Get.to(Daily());
+        Get.to(Family());
       } else {
         Get.to(Health(userId: Settings().userId));
       }

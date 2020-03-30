@@ -29,6 +29,9 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
       temperature: 0.0,
       musclePain: false,
       headache: false,
+      fatigue: false,
+      shortnessOfBreath: false,
+      soreThroat: false,
       cough: 0,
       timestamp: DateTime.now());
 
@@ -79,6 +82,10 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
           SizedBox(
             height: 20,
           ),
+          HealthOverviewTile(healthCheck: selectedHealthCheck),
+          SizedBox(
+            height: 20,
+          ),
           userID == Settings().userId
               ? GestureDetector(
                   onTap: () => {Get.to(AddHealthRecord())},
@@ -105,10 +112,6 @@ class TemperatureGraphTileState extends State<TemperatureGraphTile> {
                     ),
                   ))
               : mat.Material(),
-          SizedBox(
-            height: 20,
-          ),
-          HealthOverviewTile(healthCheck: selectedHealthCheck)
         ]));
   }
 

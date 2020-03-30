@@ -29,7 +29,7 @@ class HealthState extends State<Health> {
     super.initState();
     GetUserInteractor().getUserById(userId).then((user) {
       setState(() {
-        userName = user.name + " - ";
+        userName = user.name;
       });
     });
   }
@@ -72,17 +72,11 @@ class HealthState extends State<Health> {
                         width: 10,
                       ),
                       Text(
-                        userName + "Health",
+                        userName + "'s health",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
                   ),
-                  trailing: GestureDetector(
-                      onTap: () => {Get.to(AddHealthRecord())},
-                      child: Icon(
-                        Icons.create,
-                        color: Colors.white,
-                      )),
                 ),
                 child: Scaffold(
                   body: SafeArea(

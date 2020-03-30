@@ -20,8 +20,11 @@ class Iaso {
 
   static const _kFontFam = 'Iaso';
 
-  static const IconData headache = IconData(0xe800, fontFamily: _kFontFam);
-  static const IconData pain__1_ = IconData(0xe801, fontFamily: _kFontFam);
-  static const IconData cough = IconData(0xe802, fontFamily: _kFontFam);
-  static const IconData fever = IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData burnout = IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData sore_throat = IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData headache = IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData pain = IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData fever = IconData(0xe804, fontFamily: _kFontFam);
+  static const IconData sweat = IconData(0xe805, fontFamily: _kFontFam);
+  static const IconData cough = IconData(0xe806, fontFamily: _kFontFam);
 }

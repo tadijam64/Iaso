@@ -5,6 +5,7 @@ import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Icons/iaso_icons.dart';
 import 'package:iaso/Models/Health/GetHealthReportInteractor.dart';
 import 'package:iaso/Models/Health/HealthCheck.dart';
+import 'package:iaso/Views/Health.dart';
 
 class AddHealthRecord extends StatefulWidget {
   AddHealthRecordState createState() => new AddHealthRecordState();
@@ -42,7 +43,9 @@ class AddHealthRecordState extends State<AddHealthRecord> {
   }
 
   //Gradient
-  Color gradientStart = Color(0xFFD92525), gradientEnd = Color(0xFF8C0808);
+  Color gradientStart = Color(0xFFD92525),
+      gradientEnd = Color(0xFF8C0808),
+      back = Color(0xFFf3bdbd);
 
   Widget pageScafold() {
     return CupertinoTabView(
@@ -66,13 +69,6 @@ class AddHealthRecordState extends State<AddHealthRecord> {
             middle: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  CupertinoIcons.heart_solid,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
                 Text(
                   "New health record",
                   style: TextStyle(color: Colors.white),
@@ -146,14 +142,13 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 ),
                 Center(
                     child: CupertinoButton(
-                  color: CupertinoColors.activeBlue,
                   child: Text(
                     'Save record',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20, color: gradientStart),
                   ),
                   onPressed: () {
                     HealthFirebaseManager().addHealthEntry(healthCheck);
-                    Get.back();
+                    Get.off(Health());
                   },
                 ))
               ],
@@ -172,7 +167,7 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 child: Row(children: <Widget>[
                   Icon(
                     Iaso.cough,
-                    color: healthCheck.cough != 0 ? Colors.blue : Colors.grey,
+                    color: healthCheck.cough != 0 ? gradientStart : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -189,6 +184,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 width: (MediaQuery.of(context).size.width * 0.9),
                 height: 35,
                 child: ToggleButtons(
+                  color: Colors.grey[400],
+                  selectedColor: gradientStart,
+                  borderColor: gradientStart,
+                  selectedBorderColor: gradientStart,
+                  fillColor: back,
                   children: <Widget>[
                     Container(
                         width: ((MediaQuery.of(context).size.width * 0.85) / 3),
@@ -235,7 +235,7 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 child: Row(children: <Widget>[
                   Icon(
                     Iaso.headache,
-                    color: healthCheck.headache ? Colors.blue : Colors.grey,
+                    color: healthCheck.headache ? gradientStart : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -253,6 +253,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               width: (MediaQuery.of(context).size.width * 0.9),
               height: 35,
               child: ToggleButtons(
+                color: Colors.grey[400],
+                selectedColor: gradientStart,
+                borderColor: gradientStart,
+                selectedBorderColor: gradientStart,
+                fillColor: back,
                 children: <Widget>[
                   Container(
                       width: ((MediaQuery.of(context).size.width * 0.85) / 2),
@@ -295,8 +300,8 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 width: (MediaQuery.of(context).size.width * 0.9),
                 child: Row(children: <Widget>[
                   Icon(
-                    Iaso.headache,
-                    color: healthCheck.soreThroat ? Colors.blue : Colors.grey,
+                    Iaso.sore_throat,
+                    color: healthCheck.soreThroat ? gradientStart : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -315,6 +320,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               width: (MediaQuery.of(context).size.width * 0.9),
               height: 35,
               child: ToggleButtons(
+                color: Colors.grey[400],
+                selectedColor: gradientStart,
+                borderColor: gradientStart,
+                selectedBorderColor: gradientStart,
+                fillColor: back,
                 children: <Widget>[
                   Container(
                       width: ((MediaQuery.of(context).size.width * 0.85) / 2),
@@ -357,9 +367,9 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 width: (MediaQuery.of(context).size.width * 0.9),
                 child: Row(children: <Widget>[
                   Icon(
-                    Iaso.headache,
+                    Iaso.sweat,
                     color: healthCheck.shortnessOfBreath
-                        ? Colors.blue
+                        ? gradientStart
                         : Colors.grey,
                     size: 24,
                   ),
@@ -379,6 +389,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               width: (MediaQuery.of(context).size.width * 0.9),
               height: 35,
               child: ToggleButtons(
+                color: Colors.grey[400],
+                selectedColor: gradientStart,
+                borderColor: gradientStart,
+                selectedBorderColor: gradientStart,
+                fillColor: back,
                 children: <Widget>[
                   Container(
                       width: ((MediaQuery.of(context).size.width * 0.85) / 2),
@@ -421,8 +436,8 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 width: (MediaQuery.of(context).size.width * 0.9),
                 child: Row(children: <Widget>[
                   Icon(
-                    Iaso.headache,
-                    color: healthCheck.fatigue ? Colors.blue : Colors.grey,
+                    Iaso.burnout,
+                    color: healthCheck.fatigue ? gradientStart : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -440,6 +455,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               width: (MediaQuery.of(context).size.width * 0.9),
               height: 35,
               child: ToggleButtons(
+                color: Colors.grey[400],
+                selectedColor: gradientStart,
+                borderColor: gradientStart,
+                selectedBorderColor: gradientStart,
+                fillColor: back,
                 children: <Widget>[
                   Container(
                       width: ((MediaQuery.of(context).size.width * 0.85) / 2),
@@ -502,8 +522,10 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               child: Slider(
                 min: 35.0,
                 max: 42.0,
-                value: healthCheck.temperature,
+                activeColor: gradientStart,
                 divisions: 14,
+                inactiveColor: Colors.grey[500],
+                value: healthCheck.temperature,
                 onChanged: (value) {
                   setState(() {
                     healthCheck.temperature = value;
@@ -526,8 +548,8 @@ class AddHealthRecordState extends State<AddHealthRecord> {
                 width: (MediaQuery.of(context).size.width * 0.9),
                 child: Row(children: <Widget>[
                   Icon(
-                    Iaso.pain__1_,
-                    color: healthCheck.musclePain ? Colors.blue : Colors.grey,
+                    Iaso.pain,
+                    color: healthCheck.musclePain ? gradientStart : Colors.grey,
                     size: 24,
                   ),
                   SizedBox(
@@ -546,6 +568,11 @@ class AddHealthRecordState extends State<AddHealthRecord> {
               width: (MediaQuery.of(context).size.width * 0.9),
               height: 35,
               child: ToggleButtons(
+                color: Colors.grey[400],
+                selectedColor: gradientStart,
+                borderColor: gradientStart,
+                selectedBorderColor: gradientStart,
+                fillColor: back,
                 children: <Widget>[
                   Container(
                       width: ((MediaQuery.of(context).size.width * 0.85) / 2),
