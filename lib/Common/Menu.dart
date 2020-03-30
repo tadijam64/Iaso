@@ -24,7 +24,6 @@ class Menu {
         break;
       case 3:
         Navigator.push(
-
             context,
             MaterialPageRoute(
                 builder: (context) => new Health(userId: Settings().userId)));
@@ -39,7 +38,7 @@ class Menu {
     return [
       BottomNavigationBarItem(
           icon: Icon(
-            CupertinoIcons.person,
+            CupertinoIcons.person_solid,
             size: 30,
           ),
           title: Text(

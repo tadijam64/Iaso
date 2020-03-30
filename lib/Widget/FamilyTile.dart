@@ -79,7 +79,7 @@ class FamilyTileStatus extends State<FamilyTile> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 100,
+        height: 110,
         decoration: BoxDecoration(
             color: Color(0xFFF7F7F7),
             borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -99,11 +99,14 @@ class FamilyTileStatus extends State<FamilyTile> {
                               gradient:
                                   LinearGradient(colors: _getStatusColors()),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(60))),
                           child: Center(
                               child: Text(
                             user.name.substring(0, 2).toUpperCase(),
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily: 'Roboto'),
                           )),
                         ),
                         user.avatar != null
@@ -125,14 +128,18 @@ class FamilyTileStatus extends State<FamilyTile> {
                           user.name,
                           style: TextStyle(
                               fontSize: 20,
-                              color: Colors.grey[900],
+                              color: Colors.grey[700],
                               fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 5,
                         ),
                         Text(
                           _getDescription(),
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[400],
+                              fontFamily: 'Roboto',
                               fontWeight: FontWeight.bold),
                         )
                       ],

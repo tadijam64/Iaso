@@ -93,10 +93,8 @@ class FamilyState extends State<Family> {
                   middle: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(
-                        CupertinoIcons.person_solid,
-                        color: Colors.white,
-                      ),
+                      Icon(CupertinoIcons.person_solid,
+                          color: Colors.white, size: 30),
                       SizedBox(
                         width: 10,
                       ),
