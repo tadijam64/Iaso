@@ -289,8 +289,8 @@ def build_experiment_folder(args):
     if args.save_images:
         if not os.path.exists(images_filepath + '/train'):
             os.makedirs(images_filepath + '/train')
-        if not os.path.exists(images_filepath + '/test'):
-            os.makedirs(images_filepath + '/test')
+        if not os.path.exists(images_filepath + '/val'):
+            os.makedirs(images_filepath + '/val')
 
     args.saved_models_filepath = saved_models_filepath
     args.logs_filepath = logs_filepath
@@ -334,14 +334,14 @@ def get_best_epoch(args):
     """
     best_epoch = -1
     # Calculate the best loss from the results statistics if restarting
-    best_test_acc = 0.0
+    best_val_acc = 0.0
     if args.resume:
         print("Checking {}/{}.csv".format(args.logs_filepath, "result_summary_statistics"))
         results = read_results("{}/{}.csv".format(args.logs_filepath, "result_summary_statistics"))
-        maxi = np.argmax(results['test_acc'])
-        best_test_acc = results['test_acc'][maxi]
+        maxi = np.argmax(results['val_acc'])
+        best_val_acc = results['val_acc'][maxi]
         best_epoch = results['epoch'][maxi]
-    return best_epoch, best_test_acc
+    return best_epoch, best_val_acc
 
 
 def print_network_stats(net):
