@@ -60,4 +60,17 @@ class User {
             : null;
     return data;
   }
+
+  Map<String, dynamic> toJsonPool() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['age'] = this.age;
+    data['name'] = this.name;
+    data['hypertension'] = this.hypertension;
+    data['cardiovascularIssues'] = this.cardiovascularIssues;
+    data['chronicRespiratoryDisease'] = this.chronicRespiratoryDisease;
+    data['cancer'] = this.cancer;
+    data['diabetes'] = this.diabetes;
+
+    return data;
+  }
 }

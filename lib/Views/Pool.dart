@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iaso/Common/Settings.dart';
 import 'package:iaso/Models/PoolInteractor.dart';
+import 'package:iaso/Models/User/User.dart';
 
 class Pool extends StatefulWidget {
   PoolState createState() => new PoolState();
@@ -11,11 +12,15 @@ class Pool extends StatefulWidget {
 class PoolState extends State<Pool> {
   final Map<int, Widget> odabir = const <int, Widget>{
     0: Text('No'),
-    1: Text('Self isolated person'),
-    2: Text('Confirmed Covid-19'),
+    1: Text('Yes')
   };
 
-  int odabrani = 0;
+  int selectHypertension = 0;
+  int selectCancer = 0;
+  int selectCardiovascularIssues = 0;
+  int selectChronicRespiratoryDisease = 0;
+  int selectDiabetes = 0;
+
   TextEditingController nameController = new TextEditingController(),
       ageController = new TextEditingController();
 
@@ -37,7 +42,7 @@ class PoolState extends State<Pool> {
                       color: Colors.black87),
                 )),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text(
                   "Name:",
@@ -48,7 +53,7 @@ class PoolState extends State<Pool> {
                 ),
                 CupertinoTextField(controller: nameController),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text(
                   "Age:",
@@ -62,10 +67,10 @@ class PoolState extends State<Pool> {
                   keyboardType: TextInputType.numberWithOptions(),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text(
-                  "Have you been in contact with a person of questionable status (and what type):",
+                  "Do you suffer from hypertension?:",
                   style: TextStyle(fontSize: 18.0, color: Colors.black54),
                 ),
                 SizedBox(
@@ -75,9 +80,85 @@ class PoolState extends State<Pool> {
                     width: double.infinity,
                     child: CupertinoSlidingSegmentedControl(
                         children: odabir,
-                        groupValue: odabrani,
+                        groupValue: selectHypertension,
                         onValueChanged: (value) {
-                          odabrani = value;
+                          selectHypertension = value;
+                          setState(() {});
+                        })),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Do you suffer from any long term cardio vascular issues?:",
+                  style: TextStyle(fontSize: 18.0, color: Colors.black54),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: CupertinoSlidingSegmentedControl(
+                        children: odabir,
+                        groupValue: selectCardiovascularIssues,
+                        onValueChanged: (value) {
+                          selectCardiovascularIssues = value;
+                          setState(() {});
+                        })),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Do you have any chronic respiratory disease:",
+                  style: TextStyle(fontSize: 18.0, color: Colors.black54),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: CupertinoSlidingSegmentedControl(
+                        children: odabir,
+                        groupValue: selectChronicRespiratoryDisease,
+                        onValueChanged: (value) {
+                          selectChronicRespiratoryDisease = value;
+                          setState(() {});
+                        })),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Do you suffer from diabetes:",
+                  style: TextStyle(fontSize: 18.0, color: Colors.black54),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: CupertinoSlidingSegmentedControl(
+                        children: odabir,
+                        groupValue: selectDiabetes,
+                        onValueChanged: (value) {
+                          selectDiabetes = value;
+                          setState(() {});
+                        })),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Do you suffer from cancer:",
+                  style: TextStyle(fontSize: 18.0, color: Colors.black54),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: double.infinity,
+                    child: CupertinoSlidingSegmentedControl(
+                        children: odabir,
+                        groupValue: selectCancer,
+                        onValueChanged: (value) {
+                          selectCancer = value;
                           setState(() {});
                         })),
                 Expanded(child: Material()),
@@ -97,8 +178,18 @@ class PoolState extends State<Pool> {
     String name = nameController.text;
     int age = int.parse(ageController.text);
 
+    User user = new User();
+    user.age = age;
+    user.name = name;
+    user.hypertension = selectHypertension == 1 ? true : false;
+    user.cardiovascularIssues = selectCardiovascularIssues == 1 ? true : false;
+    user.chronicRespiratoryDisease =
+        selectChronicRespiratoryDisease == 1 ? true : false;
+    user.cancer = selectCancer == 1 ? true : false;
+    user.diabetes = selectDiabetes == 1 ? true : false;
+
     PoolInteractor pd = new PoolInteractor();
-    await pd.saveData(name, age);
+    await pd.saveData(user);
 
     Settings().startUp();
   }
