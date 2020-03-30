@@ -12,7 +12,9 @@ class Contacts extends StatefulWidget {
 
 class ContactsState extends State<Contacts> {
   List<Contact> contacts = List();
+  List<Contact> filteredContacts = List();
   List<FirebaseContact> request = new List();
+  String filter = "";
 
   @override
   void initState() {
@@ -70,6 +72,12 @@ class ContactsState extends State<Contacts> {
                       Flexible(
                           child: CupertinoTextField(
                         placeholder: "Search...",
+                        onChanged: (text) {
+                          setState(() {
+                            filter = text;
+                            _filterContacts();
+                          });
+                        },
                       ))
                     ],
                   ),
@@ -78,12 +86,12 @@ class ContactsState extends State<Contacts> {
                   height: 20,
                 ),
                 Expanded(
-                    child: (contacts != null)
+                    child: (filteredContacts != null)
                         ? new ListView.builder(
-                            itemCount: contacts.length,
+                            itemCount: filteredContacts.length,
                             itemBuilder: (BuildContext ctxt, int index) {
                               String number = "";
-                              Contact c = contacts[index];
+                              Contact c = filteredContacts[index];
                               c.phones.toList().forEach((f) {
                                 if (number == "")
                                   number = f.value.trim().replaceAll(" ", "");
@@ -150,15 +158,29 @@ class ContactsState extends State<Contacts> {
 
       setState(() {
         contacts = conts;
+        _filterContacts();
       });
 
-      for (final contact in contacts) {
+      for (final contact in filteredContacts) {
         ContactsService.getAvatar(contact).then((avatar) {
           if (avatar == null) return;
           setState(() => contact.avatar = avatar);
         });
       }
     }
+  }
+
+  _filterContacts() {
+    setState(() {
+      filteredContacts.clear();
+      filteredContacts.addAll(contacts);
+      filteredContacts = filteredContacts
+          .where((contact) =>
+              contact.displayName?.contains(filter.trim()) == true ||
+                  contact.familyName?.contains(filter.trim()) == true ||
+              contact.emails?.any((email) => email?.value.contains(filter.trim())) == true)
+          .toList();
+    });
   }
 
   Future<PermissionStatus> _getContactPermission() async {

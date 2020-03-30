@@ -28,6 +28,7 @@ class PoolState extends State<Pool> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
+            child: SingleChildScrollView(
       child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -161,7 +162,6 @@ class PoolState extends State<Pool> {
                           selectCancer = value;
                           setState(() {});
                         })),
-                Expanded(child: Material()),
                 Center(
                     child: CupertinoButton(
                   child: Text(
@@ -169,9 +169,9 @@ class PoolState extends State<Pool> {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () => _saveData(),
-                ))
+                    ))
               ])),
-    ));
+    )));
   }
 
   _saveData() async {
