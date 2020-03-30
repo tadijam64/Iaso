@@ -28,7 +28,7 @@ class SuppliesState extends State<Supplies> {
   Widget pageScafold() {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-          items: Menu().tabBar(),
+          items: Menu().tabBar(selected: 2),
           onTap: (index) {
             Menu().transfer(context, index);
           },

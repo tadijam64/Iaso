@@ -45,7 +45,7 @@ class HealthState extends State<Health> {
   Widget pageScafold() {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-          items: Menu().tabBar(),
+          items: Menu().tabBar(selected: 3),
           onTap: (index) {
             Menu().transfer(context, index);
           },

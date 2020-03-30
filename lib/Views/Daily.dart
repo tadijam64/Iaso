@@ -54,7 +54,7 @@ class DailyState extends State<Daily> {
   Widget pageScafold() {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-          items: Menu().tabBar(),
+          items: Menu().tabBar(selected: 1),
           onTap: (index) {
             Menu().transfer(context, index);
           },

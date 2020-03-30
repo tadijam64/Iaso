@@ -53,46 +53,55 @@ class Menu {
     }
   }
 
-  List<BottomNavigationBarItem> tabBar() {
+  List<BottomNavigationBarItem> tabBar({int selected = 0}) {
     return [
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.person_solid,
             size: 30,
+            color: selected == 0 ? gradientStart : Colors.grey,
           ),
           title: Text(
             "Family",
             style: TextStyle(
-              fontSize: 12,
-            ),
+                fontSize: 12,
+                color: selected == 0 ? gradientStart : Colors.grey),
           )),
       BottomNavigationBarItem(
           icon: Icon(
             Icons.chat,
             size: 25,
+            color: selected == 1 ? gradientStart : Colors.grey,
           ),
           title: Text(
             "Iaso",
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+                fontSize: 12,
+                color: selected == 1 ? gradientStart : Colors.grey),
           )),
       BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.shopping_cart,
-            color: gradientStart,
+            color: selected == 2 ? gradientStart : Colors.grey,
             size: 30,
           ),
           title: Text(
             "Supplies",
-            style: TextStyle(fontSize: 12, color: gradientStart),
+            style: TextStyle(
+                fontSize: 12,
+                color: selected == 2 ? gradientStart : Colors.grey),
           )),
       BottomNavigationBarItem(
           icon: Icon(
-            CupertinoIcons.heart,
+            CupertinoIcons.heart_solid,
             size: 30,
+            color: selected == 3 ? gradientStart : Colors.grey,
           ),
           title: Text(
             "Health",
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(
+                fontSize: 12,
+                color: selected == 3 ? gradientStart : Colors.grey),
           ))
     ];
   }

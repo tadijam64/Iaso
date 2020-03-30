@@ -74,7 +74,7 @@ class FamilyState extends State<Family> {
   Widget pageScafold() {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-          items: Menu().tabBar(),
+          items: Menu().tabBar(selected: 0),
           onTap: (index) {
             Menu().transfer(context, index);
           },
