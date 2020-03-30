@@ -5,7 +5,7 @@ import 'package:iaso/Common/AppBarGradient.dart';
 import 'package:iaso/Common/Menu.dart';
 import 'package:iaso/Models/User/GetUserInteractor.dart';
 import 'package:iaso/Widget/TemperatureGraphTile.dart';
-import 'package:iaso/Widget/TemperatureOverviewTile.dart';
+import 'package:iaso/Widget/HealthStatusTile.dart';
 
 import 'AddHealthRecord.dart';
 

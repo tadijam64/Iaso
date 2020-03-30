@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:iaso/Common/Settings.dart';
+import 'package:iaso/Views/Daily.dart';
 import 'package:iaso/Views/Health.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -25,37 +27,47 @@ final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
 
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
+enum Deeplink { iaso, health }
 
 class ReminderManager {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  void showNotification(String title, String body) async {
+  void showNotification(String title, String body, [Deeplink deeplink]) async {
+    String channel = "iaso";
+    if (deeplink == null) {
+      channel = "notification";
+    } else {
+      channel = "deeplink";
+    }
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'iaso', 'iaso', 'medicalReminder',
-        importance: Importance.Max,
-        priority: Priority.High,
-        ticker: 'ticker');
+        'iaso', channel, 'medicalReminder',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     return await notificationsPlugin.show(
-        0, title, body, platformChannelSpecifics);
+        0, title, body, platformChannelSpecifics,
+        payload: deeplink.toString());
   }
 
-  void scheduleNotification(
-      String title, String body, DateTime dateTime) async {
+  void scheduleNotification(String title, String body, DateTime dateTime,
+      [Deeplink deeplink]) async {
+    String channel = "iaso";
+    if (deeplink == null) {
+      channel = "notification";
+    } else {
+      channel = "deeplink";
+    }
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'iaso', 'iaso', 'medicalReminder',
-        importance: Importance.Max,
-        priority: Priority.High,
-        ticker: 'ticker');
+        'iaso', channel, 'medicalReminder',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     return await notificationsPlugin.schedule(
         0, title, body, dateTime, platformChannelSpecifics,
-        androidAllowWhileIdle: true);
+        androidAllowWhileIdle: true, payload: deeplink.toString());
   }
 
   void requestIOSPermissions() {
@@ -87,12 +99,11 @@ class ReminderManager {
               child: Text('Ok'),
               onPressed: () async {
                 Navigator.of(context, rootNavigator: true).pop();
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Health(userId: Settings().userId),
-                  ),
-                );
+                if (receivedNotification.payload == Deeplink.iaso.toString()) {
+                  Get.to(Daily());
+                } else {
+                  Get.to(Health(userId: Settings().userId));
+                }
               },
             )
           ],
@@ -103,11 +114,11 @@ class ReminderManager {
 
   void configureSelectNotificationSubject(BuildContext context) {
     selectNotificationSubject.stream.listen((String payload) async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Health(userId: Settings().userId)),
-      );
+      if (payload == Deeplink.iaso.toString()) {
+        Get.to(Daily());
+      } else {
+        Get.to(Health(userId: Settings().userId));
+      }
     });
   }
 }
