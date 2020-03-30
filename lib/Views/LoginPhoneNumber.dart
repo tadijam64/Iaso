@@ -41,9 +41,19 @@ class LoginPhoneNumberState extends State<LoginPhoneNumber> {
                 SizedBox(
                   height: 10,
                 ),
-                CupertinoTextField(
-                    keyboardType: TextInputType.number,
-                    controller: phoneNumberTextEditControler),
+                Container(
+                    height: 40,
+                    child: CupertinoTextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        keyboardType: TextInputType.phone,
+                        controller: phoneNumberTextEditControler)),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Example: +385951234567",
+                  style: TextStyle(fontSize: 13.0, color: Colors.black),
+                ),
                 Expanded(child: Material()),
                 Center(
                     child: CupertinoButton(
