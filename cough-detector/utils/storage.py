@@ -241,7 +241,6 @@ def restore_model(net, optimizer, args):
     :param args: 
     :return: Nothing, only restore the network and optimizer.
     """
-
     restore_path = '{}'.format(args.latest_loadpath)
     print('Latest, continuing from {}'.format(restore_path))
     checkpoint = torch.load(restore_path, map_location=lambda storage, loc: storage)

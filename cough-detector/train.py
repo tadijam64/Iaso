@@ -80,7 +80,6 @@ if not args.resume:
 num_classes = 1
 net = ModelSelector(num_classes=num_classes).select(args.model, args)
 print_network_stats(net)
-net = nn.DataParallel(net)
 net = net.to(device)
 
 ######################################################################################################### Optimisation
@@ -107,6 +106,7 @@ else:
 if args.resume:
     restore_model(net, optimizer, args)
 
+net = nn.DataParallel(net)
 ######################################################################################################### Training
 
 
