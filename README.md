@@ -1,19 +1,27 @@
-# velecasni
+# Iaso
 
-A new Flutter project.
+To start using this project you will have to setup your Firebase and signing keys.
 
-## Getting Started
+### Step 1
+Please generate a signing keystore for Android along with a properties file that contain following data:
+ - storePassword=<yourKeystorePassword>
+ - keyPassword=<yourKeyPassword>
+ - keyAlias=<yourKeyAlias>
+ - storeFile=<yourKeystorePath>
 
-This project is a starting point for a Flutter application.
+### Step 2
+Add a System path variable called IASO_CONFIG_PATH=<pathToYourPropertiesFile>
 
-A few resources to get you started if this is your first Flutter project:
+### Step 3
+Setup firebase project, add your signature key and package name (default: com.iaso.app) and download
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+google-services.json
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Place google-services.json file in /iaso/android/app directoy
+
+### Step 4
+install the app, use it and contribute
+
 
 # Icons attributions:
 Headache Icon made by Freepik from www.flaticon.com
